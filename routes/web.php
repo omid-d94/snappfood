@@ -21,4 +21,12 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+/**
+ * Authentication Routes
+ */
+require __DIR__ . '/auth.php';
+
+/**
+ * Routes Access By Admin
+ */
+require __DIR__ . '/admin.php';
