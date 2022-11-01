@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreRestaurantCategoryRequest as StoreRequest;
-use App\Http\Requests\UpdateRestaurantCategory as UpdateRequest;
+use App\Http\Requests\Categories\StoreRestaurantCategoryRequest as StoreRequest;
+use App\Http\Requests\Categories\UpdateRestaurantCategory as UpdateRequest;
 use App\Models\RestaurantCategory;
-
-//use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+
+//use Illuminate\Http\Request;
 
 class RestaurantController extends Controller
 {
@@ -18,7 +18,7 @@ class RestaurantController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['auth', 'isAdmin']);
+        $this->middleware(['auth:admin']);
     }
 
     /**
@@ -53,14 +53,14 @@ class RestaurantController extends Controller
         $request->validated();
 //        $image_path = $request->file('image')->storePublicly("images/categories");
 //        dd($image_path);
-        $imagePath = Storage::disk('public')->put('images/categories', $request->file("image"));
+        $imagePath = Storage::disk('public')->put('images/categories/restaurants', $request->file("image"));
 
         RestaurantCategory::create([
             "name" => $request->input("name"),
             "slug" => Str::slug($request->name),
             "image_path" => $imagePath,
         ]);
-        return redirect('/restaurants')
+        return redirect('/admin/restaurants')
             ->with("success", "New Category Has Been Added Successfully");
     }
 
@@ -105,16 +105,16 @@ class RestaurantController extends Controller
 
         if ($request->file("image") !== null) {
             Storage::disk('public')->delete($oldPath);
-            $imagePath = Storage::disk('public')->put('images/categories', $request->file("image"));
+            $imagePath = Storage::disk('public')->put('images/categories/restaurants', $request->file("image"));
         }
-        RestaurantCategory::where("id", $id)
+        $category = RestaurantCategory::where("id", $id)
             ->update([
                 "name" => $request->input("name"),
                 "slug" => Str::slug($request->input("name")),
                 "image_path" => $imagePath ?? $oldPath,
             ]);
-        return redirect("/restaurants")
-            ->with("success", "New Category Has Been Updated Successfully");
+        return redirect("/admin/restaurants")
+            ->with("success", "{$category->name} Category Has Been Updated Successfully");
     }
 
     /**
@@ -126,9 +126,9 @@ class RestaurantController extends Controller
     public function destroy(int $id)
     {
         $category = RestaurantCategory::where("id", $id)->firstOrFail();
+        Storage::disk('public')->delete($category->image_path);
         $category->delete();
-        Storage::delete($category->image_path);
-        return redirect("/restaurants")
+        return redirect("/admin/restaurants")
             ->with("success", "{$category->name} Category Has Been Deleted Successfully");
     }
 }

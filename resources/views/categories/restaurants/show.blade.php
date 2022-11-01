@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-admin-app-layout>
     <div class="container m-5 flex gap-12">
         <div class="flex flex-col gap-4">
             <div>
@@ -6,7 +6,7 @@
                             p-4">{{$category->name}}</p>
             </div>
             <div class="">
-                <form action="{{url("/restaurants/{$category->id}")}}" method="POST">
+                <form action="{{url("/admin/restaurants/{$category->id}")}}" method="POST">
                     @csrf
                     @method("DELETE")
                     <button type="submit"
@@ -16,7 +16,7 @@
                 </form>
             </div>
             <div>
-                <a href="{{url("/restaurants/{$category->id}/edit")}}">
+                <a href="{{url("/admin/restaurants/{$category->id}/edit")}}">
                     <button type="submit"
                             class="hover:bg-cyan-500 px-10 w-full font-bold text-lg py-3
                             bg-cyan-600 text-white rounded-2xl">
@@ -32,4 +32,4 @@
                  alt="{{$category->name}}">
         </div>
     </div>
-</x-app-layout>
+</x-admin-app-layout>

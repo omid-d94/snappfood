@@ -3,7 +3,12 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Categories\StoreFoodCategoryRequest as StoreRequest;
+use App\Http\Requests\Categories\UpdateFoodCategoryRequest as UpdateRequest;
+use App\Models\FoodCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class FoodController extends Controller
 {
@@ -13,7 +18,7 @@ class FoodController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['auth', 'isAdmin']);
+        $this->middleware(['auth:admin']);
     }
 
     /**
@@ -23,7 +28,8 @@ class FoodController extends Controller
      */
     public function index()
     {
-
+        $foodCategories = FoodCategory::all();
+        return view("categories.foods.index", compact("foodCategories"));
     }
 
     /**
@@ -33,18 +39,26 @@ class FoodController extends Controller
      */
     public function create()
     {
-        //
+        return view("categories.foods.create");
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param StoreRequest $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        //
+        $request->validated();
+        $imagePath = Storage::disk('public')->put('images/categories/foods', $request->file("image"));
+        $category = FoodCategory::create([
+            "title" => $request->input("title"),
+            "slug" => Str::slug($request->title),
+            "image_path" => $imagePath,
+        ]);
+        return redirect('/admin/foods')
+            ->with("success", "{$category->title} Category Has Been Added Successfully");
     }
 
     /**
@@ -55,7 +69,9 @@ class FoodController extends Controller
      */
     public function show($id)
     {
-        //
+        return view(
+            view: "categories.foods.show",
+            data: ["category" => FoodCategory::where("id", $id)->firstOrFail()]);
     }
 
     /**
@@ -66,19 +82,37 @@ class FoodController extends Controller
      */
     public function edit($id)
     {
-        //
+        $category = FoodCategory::where("id", $id)->firstOrFail();
+        return view("categories.foods.edit", compact("category"));
     }
 
     /**
      * Update the specified resource in storage.
+     * First, it is checked that if the photo is to be updated,
+     * The previous photo will be deleted from the memory and the new photo will replace it,
+     * otherwise no action will be taken
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param UpdateRequest $request
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
-        //
+        $request->validated();
+        $oldPath = FoodCategory::where("id", $id)->firstOrFail()->image_path;
+        if ($request->file("image") !== null) {
+            Storage::disk('public')->delete($oldPath);
+            $imagePath = Storage::disk('public')->put('images/categories/foods', $request->file("image"));
+        }
+        FoodCategory::where("id", $id)
+            ->update([
+                "title" => $request->input("title"),
+                "slug" => Str::slug($request->input("title")),
+                "image_path" => $imagePath ?? $oldPath,
+            ]);
+        return redirect("/admin/foods")
+            ->with("success", "{$request->title} Category Has Been Updated Successfully");
+
     }
 
     /**
@@ -89,6 +123,10 @@ class FoodController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $category = FoodCategory::where("id", $id)->firstOrFail();
+        Storage::disk('public')->delete($category->image_path);
+        $category->delete();
+        return redirect("/admin/foods")
+            ->with("success", "{$category->title} Category Has Been Deleted Successfully");
     }
 }

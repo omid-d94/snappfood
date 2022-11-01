@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Http\Controllers\admin\RestaurantController;
+use App\Http\Controllers\Admin\RestaurantController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

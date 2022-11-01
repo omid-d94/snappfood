@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
         User::create([
             "name" => "Omid Daryaei",
             "email" => "omid@gmail.com",
-            "is_admin" => true,
+            "role" => 2,
             "password" => Hash::make(12345678),
             "phone" => +989123456789,
         ]);

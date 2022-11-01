@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Categories;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRestaurantCategoryRequest extends FormRequest
+class StoreFoodCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class StoreRestaurantCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            "name" => ["required", "string", "min:2", "max:150"],
+            "title" => ["required", "string", "min:2", "max:150"],
             "image" => ["required", "mimes:jpg,jpeg,png,svg,gif", "min:2", "max:2048"],
         ];
     }

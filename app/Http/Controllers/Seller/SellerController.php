@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Seller;
 
-use App\Models\Seller;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSellerRequest;
 use App\Http\Requests\UpdateSellerRequest;
+use App\Models\Seller;
 
 class SellerController extends Controller
 {

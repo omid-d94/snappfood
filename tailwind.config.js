@@ -13,6 +13,9 @@ module.exports = {
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
             },
+            backgroundImage: theme => ({
+                'snappfood': "asset('img/background.png')",
+            })
         },
     },
 

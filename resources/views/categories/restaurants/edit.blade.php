@@ -1,7 +1,8 @@
-<x-app-layout>
+<x-admin-app-layout>
     <div class="m-6 mx-auto shadow-lg p-5 container">
         <h1 class="text-center font-bold text-3xl text-green-600 ">Update Restaurant Category </h1>
-        <form method="POST" action="{{url("/restaurants/{$category->id}")}}" enctype="multipart/form-data">
+        <form method="POST" action="{{url("/admin/foods/{$category->id}")}}"
+              enctype="multipart/form-data">
             @csrf
             @method("PUT")
             <div class="bg-gray-200 my-5 rounded-lg border mx-auto w-2/5">
@@ -51,4 +52,4 @@
             </div>
         </form>
     </div>
-</x-app-layout>
+</x-admin-app-layout>

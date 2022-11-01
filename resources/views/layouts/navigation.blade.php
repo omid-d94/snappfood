@@ -15,16 +15,6 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                @if(auth()->user()->is_admin)
-                    <!-- Restaurant Category -->
-                        <x-nav-link :href="url('/restaurants')" :active="request()->routeIs('restaurants')">
-                            {{ __('Restaurants') }}
-                        </x-nav-link>
-                        <!-- Food Category -->
-                        <x-nav-link :href="url('/foods')" :active="request()->routeIs('foods')">
-                            {{ __('Foods') }}
-                        </x-nav-link>
-                    @endif
                 </div>
             </div>
 
