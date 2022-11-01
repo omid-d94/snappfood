@@ -43,4 +43,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function addresses()
+    {
+        return $this->belongsToMany(
+            related: Address::class,
+            table: "address_user",
+            foreignPivotKey: "user_id",
+            relatedPivotKey: "address_id"
+        );
+    }
 }
