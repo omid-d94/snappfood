@@ -49,4 +49,14 @@ class Seller extends Authenticatable
     {
         return $this->hasMany(Restaurant::class, "seller_id");
     }
+
+    public function foods()
+    {
+        return $this->hasManyThrough(
+            Food::class,
+            Restaurant::class,
+            "seller_id",
+            "restaurant_id",
+        );
+    }
 }

@@ -23,9 +23,9 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        $restaurants = Restaurant::all()->where("seller_id", Auth::guard('seller')->id());
-        $workingTimes = $restaurants->first()->workingTimes;
-        return view('restaurants.index', compact("restaurants", "workingTimes"));
+        $restaurants = Restaurant::all()->where("seller_id", Auth::guard('seller')->user()->id);
+
+        return view('restaurants.index', compact("restaurants"));
     }
 
     /**
@@ -56,18 +56,18 @@ class RestaurantController extends Controller
 
         $validated["seller_id"] = auth("seller")->user()->id;
         $validated["type"] = RestaurantCategory::where("name", $request->type)->firstOrFail()->id;
+
         $validated["status"] = true;
         $restaurant = Restaurant::create($validated);
 
         foreach ($request->day as $day => $time) {
-            $working_times_id[] = WorkingTime::create([
+            WorkingTime::create([
                 'day' => $day,
                 'start' => $time[0],
                 'end' => $time[1],
-            ])->id;
+                'restaurant_id' => $restaurant->id,
+            ]);
         }
-
-        $restaurant->workingTimes()->attach($working_times_id);
 
         return redirect('/seller/restaurants')
             ->with("success", "Congradulation!☺ {$restaurant->title} Has Been Created Successfully");
@@ -107,13 +107,25 @@ class RestaurantController extends Controller
      */
     public function update(RestaurantRequest $request, Restaurant $restaurant)
     {
+
         $validated = $request->validated();
-        $oldPath = $restaurant->firstOrFail()->logo;
-        if ($request->file("image") !== null) {
+
+        $oldPath = $restaurant->logo;
+        if ($request->file("logo") !== null) {
             Storage::disk('public')->delete($oldPath);
-            $imagePath = Storage::disk('public')->put('images/restaurants', $request->file("image"));
+            $imagePath = Storage::disk('public')->put('images/restaurants', $request->file("logo"));
         }
-        $validated['image'] = $imagePath ?? $oldPath;
+
+        foreach ($request->day as $day => $time) {
+            $restaurant->workingTimes()->where("day", $day)->update([
+                'start' => $time[0],
+                'end' => $time[1],
+            ]);
+        }
+        $validated["is_open"] = $request->input("is_open");
+
+        $validated["type"] = $restaurant->restaurantCategory->id;
+        $validated['logo'] = $imagePath ?? $oldPath;
         $restaurant->update($validated);
 
         return redirect("/seller/restaurants")

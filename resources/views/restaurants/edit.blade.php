@@ -1,7 +1,12 @@
 <x-seller-app-layout>
-    <div class="px-16 mx-auto shadow-lg">
-        <h1 class="font-bold text-2xl text-center text-red-600 ">Restaurant Setting</h1>
-        <form action="{{url("/seller/restaurants")}}" method="POST" enctype="multipart/form-data">
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Setting') }}
+        </h2>
+    </x-slot>
+
+    <div class="px-16 mt-10 mx-auto shadow-lg">
+        <form action="{{url("/seller/restaurants/{$restaurant->id}")}}" method="POST" enctype="multipart/form-data">
             @csrf
             @method("PUT")
             <div>
@@ -30,11 +35,13 @@
                         <div class="flex gap-2">
                             <div>
                                 <label for="open">Open</label>
-                                <input type="radio" name="is_open" id="open">
+                                <input type="radio" name="is_open" id="open"
+                                       value="1" {{$restaurant->is_open?" checked":""}}>
                             </div>
                             <div>
                                 <label for="close">Close</label>
-                                <input type="radio" name="is_open" id="close">
+                                <input type="radio" name="is_open" id="close"
+                                       value="0" {{!$restaurant->is_open?"checked":""}}>
                             </div>
                         </div>
                     </div>
@@ -66,19 +73,25 @@
                             value="{{$restaurant->account}}" type="text" name="account" id="account" required>
                     </div>
                 </div>
-                <!-- Address -->
                 <div class="flex justify-between py-3 pb-10 bg-white border-t-4 border-gray-300 py-5 px-10 ">
+                    <!-- Address -->
                     <div class="flex flex-col items-start ">
                         <label class="font-semibold text-gray-700 px-3" for="address">Address</label>
                         <textarea
                             class="border-2 border-red-200 text-lg rounded-lg hover:bg-blue-100 font-semibold "
                             name="address" cols="30" rows="5" id="address" required>{{$restaurant->address}}</textarea>
                     </div>
-                    <div class="self-end pb-10">
-                        <button type="submit" class="font-bold text-lg px-14 py-3 bg-blue-600 text-white
-                                    rounded-xl">Save Change
-                        </button>
+
+                    <!-- Send Cost -->
+                    <div class="flex gap-4 p-8 items-center rounded-t-lg">
+                        <label class="font-semibold text-gray-700" for="send_cost">
+                            Send Cost
+                        </label>
+                        <input
+                            class="border-2 border-red-200 rounded-lg hover:bg-blue-100 font-semibold "
+                            value="{{$restaurant->send_cost}}" type="text" name="send_cost" id="send_cost" required>
                     </div>
+
                     <!-- Schedule -->
                     <div>
                         <table class="text-center border-b-2 border-green-800">
@@ -110,6 +123,12 @@
                             </tbody>
                         </table>
                     </div>
+
+                </div>
+                <div class="self-end pb-10 text-center">
+                    <button type="submit" class="font-bold text-lg px-14 py-3 bg-blue-600 text-white
+                                    rounded-xl">Save Change
+                    </button>
                 </div>
 
             </div>

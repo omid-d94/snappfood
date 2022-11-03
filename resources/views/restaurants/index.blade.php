@@ -1,4 +1,11 @@
 <x-seller-app-layout>
+
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Restaurant Info') }}
+        </h2>
+    </x-slot>
+
     <section class="p-10 mx-auto">
         @if(session('success'))
             <div class=" mx-auto bg-green-100 border-2 text-center w-1/3 border-green-200 rounded-2xl p-5 m-2">
@@ -35,7 +42,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @forelse($workingTimes as $time)
+                            @forelse($restaurant->workingTimes as $time)
                                 <tr class="hover:bg-green-100 cursor-pointer">
                                     <td class="border-x-2 border-green-800">{{$time->day}}</td>
                                     <td class="border-r-2 border-green-800">{{$time->start}}</td>
@@ -61,6 +68,8 @@
                             </div>
                         </div>
                         <p class="font-semibold pb-3">Phone: {{$restaurant->phone}}</p>
+                        <p class="font-semibold pb-3">Send
+                            Cost: {{ $restaurant->send_cost}} {{($restaurant->send_cost=="Free")?"":"T"}}</p>
                     </div>
                 </div>
             @empty

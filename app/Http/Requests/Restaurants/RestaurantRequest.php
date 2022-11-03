@@ -32,7 +32,8 @@ class RestaurantRequest extends FormRequest
             "logo" => ["required", "mimes:jpg,gif,png,svg,jpeg", "max:3072"],
             "type" => ["required"],
             "phone" => ["required", "string", "max:15"],
-            "account" => ["required", "string", "max:15"],
+            "account" => ["required", "alpha_num", "between:10,15 "],
+            "send_cost" => ["required", "alpha_num"],
         ];
     }
 

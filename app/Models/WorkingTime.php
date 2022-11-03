@@ -9,13 +9,10 @@ class WorkingTime extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['start', 'end', 'day'];
+    protected $fillable = ['start', 'end', 'day','restaurant_id'];
 
-    public function restaurants()
+    public function restaurant()
     {
-        return $this->belongsToMany(Restaurant::class,
-            "restaurant_working_time",
-            "working_time_id",
-            "restaurant_id");
+        return $this->belongsTo(Restaurant::class, "restaurant_id");
     }
 }

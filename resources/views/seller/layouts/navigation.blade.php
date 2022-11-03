@@ -26,9 +26,10 @@
                         {{ __('Restaurants') }}
                     </x-nav-link>
                     <!-- Restaurant Setting -->
-                    <x-nav-link :href="url('seller/restaurants/setting')"
-                                :active="request()->routeIs('seller.restaurants.setting')">
-                        {{ __('Setting') }}
+
+                    <x-nav-link :href="route('seller.foods.index')"
+                                :active="request()->routeIs('seller.foods.index')">
+                        {{ __('Foods') }}
                     </x-nav-link>
                 </div>
             </div>

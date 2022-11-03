@@ -13,7 +13,7 @@ class FoodRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,10 @@ class FoodRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            "title" => ["required", "string", "between:2,200"],
+            "raw_material" => ["string", "between:0,500"],
+            "price" => ["required", "numeric"],
+            "image" => ["mimes:jpg,gif,png,svg,jpeg", "max:3072"],
         ];
     }
 }
