@@ -29,14 +29,14 @@ Route::get('/dashboard', function () {
  */
 Route::get('/seller/dashboard', function () {
     return view('seller.dashboard');
-})->middleware(['auth:seller', 'verified:seller'])->name('seller.dashboard');
+})->middleware(['seller'])->name('seller.dashboard');
 
 /**
  * Admin Dashboard
  */
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard');
-})->middleware(['auth:admin', 'verified:admin'])->name('admin.dashboard');
+})->middleware(['admin',])->name('admin.dashboard');
 
 
 /**

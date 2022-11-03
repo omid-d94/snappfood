@@ -15,13 +15,20 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     @if(Auth::guard("seller"))
-                        <x-nav-link :href="route('seller.dashboard')" :active="request()->routeIs('seller.dashboard')">
+                        <x-nav-link :href="route('seller.dashboard')"
+                                    :active="request()->routeIs('seller.dashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
                 @endif
                 <!-- Restaurant Category -->
-                    <x-nav-link :href="url('/seller/restaurants')" :active="request()->routeIs('restaurants')">
+                    <x-nav-link :href="route('seller.restaurants.index')"
+                                :active="request()->routeIs('seller.restaurants.index')">
                         {{ __('Restaurants') }}
+                    </x-nav-link>
+                    <!-- Restaurant Setting -->
+                    <x-nav-link :href="url('seller/restaurants/setting')"
+                                :active="request()->routeIs('seller.restaurants.setting')">
+                        {{ __('Setting') }}
                     </x-nav-link>
                 </div>
             </div>

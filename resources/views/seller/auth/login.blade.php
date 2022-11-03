@@ -1,5 +1,39 @@
 <x-seller-guest-layout>
+    <div>
+
+        {{-- Admin Login|Register|Dashboard --}}
+        @if (Route::has('admin.login'))
+            <div class="hidden float-left top-0 right-0 px-6 py-4 sm:block">
+                @auth("admin")
+                    <a href="{{ url('/admin/dashboard') }}"
+                       class="">
+                        <button class="hover:bg-red-500 px-5 py-3 rounded-lg bg-green-500 text-white ">Dashboard
+                        </button>
+                    </a>
+                @else
+                    <div class="flex flex-col items-center justify-center">
+
+                        <span class="font-semibold text-xl">Admin</span>
+                        <div class="flex">
+                            <a href="{{ route('admin.login') }}">
+                                <button class="hover:bg-red-500 px-5 py-3 rounded-l-lg bg-green-500 text-white ">Log in
+                                </button>
+                            </a>
+
+                            <a href="{{ route('admin.register') }}">
+                                <button class="hover:bg-red-500 px-5 py-3 rounded-r-lg bg-green-500 text-white ">
+                                    Register
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                @endif
+            </div>
+        @endif
+    </div>
     <x-auth-card>
+
+
         <x-slot name="logo">
             <a href="/">
                 <x-snappfood-logo class="w-20 h-20 rounded-full"/>
@@ -45,17 +79,30 @@
                 </label>
             </div>
 
-            <div class="flex items-center justify-end mt-4">
-                @if (Route::has('seller.password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900"
-                       href="{{ route('seller.password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
-                @endif
-
-                <x-primary-button class="ml-3">
-                    {{ __('Log in') }}
-                </x-primary-button>
+            <div class="flex flex-col items-center justify-center mt-4">
+                <div class="self-start">
+                    <div>
+                        @if (Route::has('seller.password.request'))
+                            <a class="underline text-sm text-gray-600 hover:text-gray-900"
+                               href="{{ route('seller.password.request') }}">
+                                {{ __('Forgot your password?') }}
+                            </a>
+                        @endif
+                    </div>
+                    <div>
+                        @if (Route::has('seller.register'))
+                            <a class="underline text-sm text-gray-600 hover:text-gray-900"
+                               href="{{ route('seller.register') }}">
+                                {{ __('Dont have an account?') }}
+                            </a>
+                        @endif
+                    </div>
+                </div>
+                <div>
+                    <x-primary-button class="ml-3">
+                        {{ __('Log in') }}
+                    </x-primary-button>
+                </div>
             </div>
         </form>
     </x-auth-card>

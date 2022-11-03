@@ -5,21 +5,23 @@
                 <span class="text-green-900 ">{{ session('success') }}</span>
             </div>
     @endif
+
     <!-- Create New Category for Restaurant -->
         <div class="mx-auto text-center">
             <div class="mt-5">
-                <a href="{{url("/admin/restaurants/create")}}">
-                    <button class="font-bold hover:bg-blue-500 px-5 py-3 bg-blue-600 text-white rounded-2xl">
-                        Add New Category For Restaurant
-                    </button>
-                </a>
+                @auth('admin')
+                    <a href="{{url("/admin/restaurantCategories/create")}}">
+                        <button class="font-bold hover:bg-blue-500 px-5 py-3 bg-blue-600 text-white rounded-2xl">
+                            Add New Category For Restaurant
+                        </button>
+                    </a>
+                @endauth
             </div>
             <div class="px-5 py-24 mx-auto">
-                <div class="flex flex-wrap m-4  gap-3 ">
+                <div class="flex flex-wrap m-4 gap-3">
                     @forelse($categories as $category)
                         <div class=" lg:w-1/4 md:w-1/2  w-full">
-
-                            <a href="{{url("/admin/restaurants/{$category->id}")}}">
+                            <a href="{{url("/admin/restaurantCategories/{$category->id}")}}">
                                 <img class="h-full w-full hover:border-green-500 border-2 rounded-full border-red-500
                             rounded-full cursor-pointer"
                                      src="{{asset("storage/".$category->image_path)}}"
@@ -28,7 +30,6 @@
                                 <h3 class="h-full cursor-pointer hover:text-green-700 w-full text-xl text-red-700 font-bold
                             p-4">{{$category->name}}</h3>
                             </a>
-
                         </div>
                     @empty
                         <div class="mx-auto ">

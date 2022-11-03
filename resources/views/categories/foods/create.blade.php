@@ -1,7 +1,7 @@
 <x-admin-app-layout>
     <div class="m-6 mx-auto shadow-lg p-5 container">
         <h1 class="text-center font-bold text-3xl text-green-600 ">Create New Category For Foods </h1>
-        <form method="POST" action="{{url("/admin/foods")}}" enctype="multipart/form-data">
+        <form method="POST" action="{{url("/admin/foodCategories")}}" enctype="multipart/form-data">
             @csrf
             <div class="bg-gray-200 my-5 rounded-lg border mx-auto w-2/5">
                 <div class="p-5">

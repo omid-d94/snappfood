@@ -11,14 +11,14 @@ use Illuminate\Support\Str;
 
 //use Illuminate\Http\Request;
 
-class RestaurantController extends Controller
+class RestaurantCategoryController extends Controller
 {
     /**
      * Only Admin Can Access To These Actions
      */
     public function __construct()
     {
-        $this->middleware(['auth:admin']);
+
     }
 
     /**
@@ -29,7 +29,7 @@ class RestaurantController extends Controller
     public function index()
     {
         $categories = RestaurantCategory::all();
-        return view("categories.restaurants.index", compact('categories'));
+        return view("restaurants.categories.index", compact('categories'));
     }
 
     /**
@@ -39,7 +39,7 @@ class RestaurantController extends Controller
      */
     public function create()
     {
-        return view('categories.restaurants.create');
+        return view('restaurants.categories.create');
     }
 
     /**
@@ -60,7 +60,7 @@ class RestaurantController extends Controller
             "slug" => Str::slug($request->name),
             "image_path" => $imagePath,
         ]);
-        return redirect('/admin/restaurants')
+        return redirect('/admin/restaurantCategories')
             ->with("success", "New Category Has Been Added Successfully");
     }
 
@@ -72,7 +72,7 @@ class RestaurantController extends Controller
      */
     public function show(int $id)
     {
-        return view("categories.restaurants.show", ["category" => RestaurantCategory::where("id", $id)->firstOrFail()]);
+        return view("restaurants.categories.show", ["category" => RestaurantCategory::where("id", $id)->firstOrFail()]);
     }
 
     /**
@@ -84,7 +84,7 @@ class RestaurantController extends Controller
     public function edit($id)
     {
         $category = RestaurantCategory::where("id", $id)->firstOrFail();
-        return view("categories.restaurants.edit", compact("category"));
+        return view("restaurants.categories.edit", compact("category"));
     }
 
     /**
@@ -113,7 +113,7 @@ class RestaurantController extends Controller
                 "slug" => Str::slug($request->input("name")),
                 "image_path" => $imagePath ?? $oldPath,
             ]);
-        return redirect("/admin/restaurants")
+        return redirect("/admin/restaurantCategories")
             ->with("success", "{$category->name} Category Has Been Updated Successfully");
     }
 
@@ -128,7 +128,7 @@ class RestaurantController extends Controller
         $category = RestaurantCategory::where("id", $id)->firstOrFail();
         Storage::disk('public')->delete($category->image_path);
         $category->delete();
-        return redirect("/admin/restaurants")
+        return redirect("/admin/restaurantCategories")
             ->with("success", "{$category->name} Category Has Been Deleted Successfully");
     }
 }

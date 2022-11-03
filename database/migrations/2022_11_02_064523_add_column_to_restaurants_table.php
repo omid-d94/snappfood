@@ -13,10 +13,11 @@ return new class extends Migration {
     public function up()
     {
         Schema::table('restaurants', function (Blueprint $table) {
-            $table->text('address')->change();
-            $table->float('latitude', 10, 6);
-            $table->float('longitude', 10, 6);
-            $table->unsignedBigInteger("schedule")->change();
+            $table->unsignedBigInteger("seller_id");
+            $table->foreign("seller_id")
+                ->references("id")
+                ->on("sellers")
+                ->onDelete("cascade");
         });
     }
 
@@ -28,9 +29,8 @@ return new class extends Migration {
     public function down()
     {
         Schema::table('restaurants', function (Blueprint $table) {
-            $table->json("address")->change();
-            $table->json("schedule")->change();
-            $table->dropColumn(["latitude", "longitude"]);
+            $table->dropForeign("restaurants_seller_id_foreign");
+            $table->dropColumn("seller_id");
         });
     }
 };

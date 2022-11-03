@@ -7,16 +7,14 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     /**
      * Run the migrations.
-     *
+     * If status is true mean that Restaurant's info has been completed
      * @return void
      */
     public function up()
     {
         Schema::table('restaurants', function (Blueprint $table) {
-            $table->text('address')->change();
-            $table->float('latitude', 10, 6);
-            $table->float('longitude', 10, 6);
-            $table->unsignedBigInteger("schedule")->change();
+            $table->boolean("status")->default(false);
+            $table->string('account');
         });
     }
 
@@ -28,9 +26,7 @@ return new class extends Migration {
     public function down()
     {
         Schema::table('restaurants', function (Blueprint $table) {
-            $table->json("address")->change();
-            $table->json("schedule")->change();
-            $table->dropColumn(["latitude", "longitude"]);
+            $table->dropColumn(['status', 'account']);
         });
     }
 };

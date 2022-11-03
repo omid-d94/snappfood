@@ -1,14 +1,15 @@
 <?php
 
 
-use App\Http\Controllers\Admin\FoodController;
-use App\Http\Controllers\Admin\RestaurantController;
+use App\Http\Controllers\admin\FoodCategoryController;
+use App\Http\Controllers\admin\RestaurantCategoryController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::group(['middleware' => ['auth:admin'], 'prefix' => 'admin', 'as', 'admin.'], function () {
+Route::prefix("admin")->group(function () {
 
-    Route::resource('foods', FoodController::class);
-    Route::resource('restaurants', RestaurantController::class);
+    Route::resource('foodCategories', FoodCategoryController::class);
+    Route::resource('restaurantCategories', RestaurantCategoryController::class);
 
 });
+

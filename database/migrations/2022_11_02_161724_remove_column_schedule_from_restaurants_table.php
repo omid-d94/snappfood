@@ -13,10 +13,7 @@ return new class extends Migration {
     public function up()
     {
         Schema::table('restaurants', function (Blueprint $table) {
-            $table->text('address')->change();
-            $table->float('latitude', 10, 6);
-            $table->float('longitude', 10, 6);
-            $table->unsignedBigInteger("schedule")->change();
+            $table->dropColumn("schedule");
         });
     }
 
@@ -28,9 +25,7 @@ return new class extends Migration {
     public function down()
     {
         Schema::table('restaurants', function (Blueprint $table) {
-            $table->json("address")->change();
-            $table->json("schedule")->change();
-            $table->dropColumn(["latitude", "longitude"]);
+            $table->unsignedBigInteger("schedule");
         });
     }
 };

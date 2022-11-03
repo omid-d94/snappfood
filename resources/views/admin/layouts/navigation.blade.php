@@ -14,20 +14,22 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    @if(Auth::guard("admin"))
+                    @auth("admin")
                         <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                             {{ __('Admin Dashboard') }}
                         </x-nav-link>
 
                         <!-- Restaurant Category -->
-                        <x-nav-link :href="url('/admin/restaurants')" :active="request()->routeIs('admin.restaurants')">
+                        <x-nav-link :href="route('restaurantCategories.index')" :active="request()->routeIs('admin
+                        .restaurantCategories')">
                             {{ __('Restaurants') }}
                         </x-nav-link>
                         <!-- Food Category -->
-                        <x-nav-link :href="url('/admin/foods')" :active="request()->routeIs('admin.foods')">
+                        <x-nav-link :href="route('foodCategories.index')" :active="request()->routeIs('admin
+                        .foodCategories')">
                             {{ __('Foods') }}
                         </x-nav-link>
-                    @endif
+                    @endauth
                 </div>
             </div>
 

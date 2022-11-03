@@ -1,7 +1,7 @@
 <x-admin-app-layout>
     <div class="m-6 mx-auto shadow-lg p-5 container">
         <h1 class="text-center font-bold text-3xl text-green-600 ">Update Restaurant Category </h1>
-        <form method="POST" action="{{url("/admin/foods/{$category->id}")}}"
+        <form method="POST" action="{{url("/admin/restaurantCategories/{$category->id}")}}"
               enctype="multipart/form-data">
             @csrf
             @method("PUT")

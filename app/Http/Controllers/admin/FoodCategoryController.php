@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class FoodController extends Controller
+class FoodCategoryController extends Controller
 {
 
     /**
@@ -18,7 +18,7 @@ class FoodController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['auth:admin']);
+
     }
 
     /**
@@ -57,7 +57,7 @@ class FoodController extends Controller
             "slug" => Str::slug($request->title),
             "image_path" => $imagePath,
         ]);
-        return redirect('/admin/foods')
+        return redirect('/admin/foodCategories')
             ->with("success", "{$category->title} Category Has Been Added Successfully");
     }
 
@@ -110,7 +110,7 @@ class FoodController extends Controller
                 "slug" => Str::slug($request->input("title")),
                 "image_path" => $imagePath ?? $oldPath,
             ]);
-        return redirect("/admin/foods")
+        return redirect("/admin/foodCategories")
             ->with("success", "{$request->title} Category Has Been Updated Successfully");
 
     }
@@ -126,7 +126,7 @@ class FoodController extends Controller
         $category = FoodCategory::where("id", $id)->firstOrFail();
         Storage::disk('public')->delete($category->image_path);
         $category->delete();
-        return redirect("/admin/foods")
+        return redirect("/admin/foodCategories")
             ->with("success", "{$category->title} Category Has Been Deleted Successfully");
     }
 }
