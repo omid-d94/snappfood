@@ -9,6 +9,7 @@ class Food extends Model
 {
     use HasFactory;
 
+    protected $table = "foods";
     protected $guarded = [];
 
     /**
@@ -26,7 +27,7 @@ class Food extends Model
      */
     public function foodCategory()
     {
-        return $this->belongsTo(FoodCategory::class);
+        return $this->belongsTo(FoodCategory::class,"food_category");
     }
 
     /**
