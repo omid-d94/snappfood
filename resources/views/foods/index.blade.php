@@ -1,8 +1,13 @@
 <x-seller-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Food Menu') }}
-        </h2>
+        <div class="flex gap-8">
+        <span class="font-semibold text-xl text-gray-800 leading-tight hover:text-green-700">
+            <a href="{{url("/seller/foods")}}">{{ __('Menu') }}</a>
+        </span>
+            <span class="font-semibold text-xl text-gray-800 leading-tight hover:text-green-700">
+            <a href="{{url("/seller/foods/create")}}">{{ __('Add-Food') }}</a>
+        </span>
+        </div>
     </x-slot>
 
     <section class="p-10 mx-auto">
@@ -14,30 +19,61 @@
 
         <div class=" m-5 shadow-lg">
 
-            @forelse($foods=[] as $food)
-                <div class="flex justify-around items-center p-16">
-                    <div>
-                        <a href="{{url("/seller/restaurants/{$food->id}/edit")}}">
-                            <button class="px-5 font-semibold py-12 rounded-lg bg-cyan-600 text-white
-                            hover:bg-cyan-500">
-                                Edit<br>Food<br>Info
-                            </button>
-                        </a>
-                    </div>
-                    <div class=" lg:w-1/4 md:w-1/2  w-full">
-                        <h1 class="font-bold text-gray-800 text-2xl text-center">{{$food->title}}</h1>
-                        <img class="border-4 border-white h-full w-full hover:border-green-500 border-2 rounded-3xl
-                    cursor-pointer " src="{{asset
-                    ("storage/".$food->image_path)}}"
-                             alt="">
-                    </div>
-                </div>
-                <div>
-                    <p class="font-semibold pb-3">Phone: {{$food->raw_material}}</p>
-                    <p class="font-semibold pb-3">Price: {{ $food->price}} </p>
-                </div>
-            @empty
-            @endforelse
+            <div class="mx-10 my-5 p-16 flex items-center justify-center">
+                <table class="text-center ">
+                    <thead class="bg-cyan-900 text-white">
+                    <tr>
+                        <td class="px-5 py-3 font-bold text-lg border-r-2 border-white">No.</td>
+                        <td class="px-5 py-3 font-bold text-lg border-r-2 border-white">Title</td>
+                        <td class="px-5 py-3 font-bold text-lg border-r-2 border-white">Raw Material</td>
+                        <td class="px-5 py-3 font-bold text-lg border-r-2 border-white">Price</td>
+                        <td class="px-5 py-3 font-bold text-lg " colspan="3">Action</td>
+                    </tr>
+
+                    </thead>
+                    <tbody class="bg-white ">
+                    @php
+                        $row=0;
+                    @endphp
+                    @forelse($foods as $food)
+                        <tr>
+                            <td class="border-r-2 border-cyan-900 px-5 py-3 font-semibold">{{++$row}}</td>
+                            <td class="border-r-2 border-cyan-900 px-5 py-3 font-semibold">{{$food->title}}</td>
+                            <td class="border-r-2 border-cyan-900 px-5 py-3 font-semibold">{{$food->raw_material}}</td>
+                            <td class="border-r-2 border-cyan-900 px-5 py-3 font-semibold">{{$food->price}}</td>
+                            <td class="px-5 py-3 font-semibold bg-green-600 text-white
+                            cursor-pointer hover:bg-green-500 ">
+                                <a href="{{url("/seller/foods/{$food->id}")}}">
+                                    Show
+                                </a>
+                            </td>
+                            <td class="px-5 py-3 font-semibold bg-cyan-600 text-white
+                            cursor-pointer hover:bg-cyan-500 ">
+                                <a href="{{url("/seller/foods/{$food->id}/edit")}}">
+                                    Edit
+                                </a>
+                            </td>
+                            <td class="bg-red-600 text-white px-5 py-3 hover:bg-red-500 cursor-pointer font-semibold">
+                                <form action="{{url("/seller/foods/{$food->id}")}}" method="POST">
+                                    @csrf
+                                    @method("DELETE")
+                                    <button type="submit" class="">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+
+                        </tr>
+                    @empty
+                        <tr>
+                            <td class="px-5 py-3" colspan="5">
+                                <span class="text-xl text-red-600 font-semibold">☺ THE FOOD MENU IS EMPTY! ☺</span>
+                            </td>
+                        </tr>
+                    @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
     </section>
 </x-seller-app-layout>

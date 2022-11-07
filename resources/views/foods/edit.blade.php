@@ -9,10 +9,11 @@
 
     <div class="mx-auto  px-16 py-10 m-10 ">
         <h2 class="mx-36 mb-10 font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Add New Food To Your Menu') }}
+            {{ __('Editing of '). $food->title .__(' food') }}
         </h2>
-        <form action="{{url("/seller/foods")}}" method="POST" enctype="multipart/form-data">
+        <form action="{{url("/seller/foods/$food->id")}}" method="POST" enctype="multipart/form-data">
             @csrf
+            @method("PUT")
             <div class="flex flex-col w-2/3 mx-auto gap-3 mx-36">
                 <div class="flex justify-between items-center">
                     <!-- Title -->
@@ -21,17 +22,17 @@
                         <input
                             class="w-full border-2 border-blue-200 rounded-lg hover:bg-blue-100 font-semibold "
                             type="text" name="title" id="title"
-                            value="{{old("title")}}" required autofocus>
+                            value="{{$food->title}}" required autofocus>
                         @error("title") <span class="font-semibold text-lg text-blue-600">{{$message}}</span> @enderror
                     </div>
                     <!-- Type -->
                     <div class="py-3">
                         <label class="font-semibold text-gray-700 px-3" for="type">Type</label>
                         <select class="w-full border-2 border-blue-200 rounded-lg cursor-pointer font-semibold "
-                                name="type" id="type" required>
+                                name="food_category" id="type" required>
                             <option selected>Choose...</option>
                             @foreach($categories as $category)
-                                <option value="{{$category->title}}">{{ucfirst($category->title)}}</option>
+                                <option value="{{$category->id}}">{{ucfirst($category->title)}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -41,7 +42,7 @@
                         <input
                             class="w-full border-2 border-blue-200 rounded-lg hover:bg-blue-100 font-semibold "
                             type="text" name="price" id="price"
-                            value="{{old("price")}}" required>
+                            value="{{$food->price}}" required>
                         @error("price") <span class="font-semibold text-lg text-blue-600">{{$message}}</span> @enderror
                     </div>
                 </div>
@@ -51,7 +52,7 @@
                     <textarea
                         class="w-full border-2 border-blue-200 rounded-lg hover:bg-blue-100 font-semibold "
                         type="text" name="raw_material" id="raw_material"
-                    >{{old("raw_material")}}</textarea>
+                    >{{$food->raw_material}}</textarea>
                     @error("raw_material") <span
                         class="font-semibold text-lg text-blue-600">{{$message}}</span> @enderror
                 </div>
@@ -59,14 +60,14 @@
                 <div class="py-3">
                     <label class="font-semibold text-gray-700 px-3" for="image">Food Image</label>
                     <input class="w-full cursor-pointer rounded-lg hover:bg-blue-100 font-semibold "
-                           type="file" name="image_path" id="image" value="{{old("image_path")}}" required>
+                           type="file" name="image_path" id="image">
                     @error("image_path") <span class="font-semibold text-lg text-red-600">{{$message}}</span> @enderror
                 </div>
 
                 <div class="text-center">
                     <button type="submit"
                             class="font-bold hover:bg-blue-500 text-lg px-14 py-3 bg-blue-600 text-white
-                                rounded-xl">Create
+                                rounded-xl">Update
                     </button>
                 </div>
 
@@ -77,3 +78,4 @@
 
 
 </x-seller-app-layout>
+

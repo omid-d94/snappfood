@@ -23,15 +23,10 @@ class FoodController extends Controller
      */
     public function index()
     {
-//        $restaurants = auth("seller")->user()->restaurants;
-
-//        foreach ($restaurants as $restaurant) {
-//            $foods[] = $restaurant->foods;
-//        }
-
-//        $foods = Food::all();
-
-        return view("foods.index");
+        $restaurant = auth("seller")->user()->restaurants->first();
+        $foods = Food::where("restaurant_id", $restaurant?->id)->get();
+//        dd($foods);
+        return view("foods.index", compact("foods"));
     }
 
     /**
@@ -54,15 +49,16 @@ class FoodController extends Controller
     public function store(FoodRequest $request)
     {
         $validated = $request->validated();
-        $validated["image_path"] = Storage::disk('public')->put('images/foods', $request->file("image"));
 
-        $validated["restaurant_id"] = Restaurant::where("seller_id", auth("seller")->user())->firstOrFail()->id;
+        //save image to public storage and add image_path to food's table
+        $validated["image_path"] = Storage::disk('public')->put('images/foods', $request->file("image_path"));
 
+        $validated["restaurant_id"] = auth("seller")->user()->restaurants->firstOrFail()->id;
         $validated["food_category"] = FoodCategory::where("title", $request->type)->firstOrFail()->id;
         $food = Food::create($validated);
 
         return redirect("/seller/foods")
-            ->with("success", "Congradulation!☺ {$food->title} Has Been Created Successfully");;
+            ->with("success", "Congradulation!☺ {$food->title} Has Been Created Successfully");
 
     }
 
@@ -74,7 +70,8 @@ class FoodController extends Controller
      */
     public function show(Food $food)
     {
-        return view('foods.show', $food->firstOrFail());
+        $category = $food->foodCategory;
+        return view('foods.show', compact("food", "category"));
     }
 
     /**
@@ -103,11 +100,13 @@ class FoodController extends Controller
         $validated = $request->validated();
 
         $oldPath = $food->image_path;
-        if ($request->file("image") !== null) {
+
+        if ($request->file("image_path") !== null) {
             Storage::disk('public')->delete($oldPath);
-            $imagePath = Storage::disk('public')->put('images/foods', $request->file("image"));
+            $imagePath = Storage::disk('public')->put('images/foods', $request->file("image_path"));
         }
-        $validated["food_category"] = $food->foodCategory->id;
+
+//        $validated["food_category"] = $food->foodCategory->id;
         $validated['image_path'] = $imagePath ?? $oldPath;
         $food->update($validated);
 
