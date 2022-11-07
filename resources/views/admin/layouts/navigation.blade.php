@@ -20,13 +20,13 @@
                         </x-nav-link>
 
                         <!-- Restaurant Category -->
-                        <x-nav-link :href="route('restaurantCategories.index')" :active="request()->routeIs('admin
-                        .restaurantCategories')">
+                        <x-nav-link :href="route('restaurant-categories.index')" :active="request()->routeIs('admin
+                        .restaurant-categories')">
                             {{ __('Restaurants') }}
                         </x-nav-link>
                         <!-- Food Category -->
-                        <x-nav-link :href="route('foodCategories.index')" :active="request()->routeIs('admin
-                        .foodCategories')">
+                        <x-nav-link :href="route('food-categories.index')" :active="request()->routeIs('admin
+                        .food-categories')">
                             {{ __('Foods') }}
                         </x-nav-link>
                     @endauth

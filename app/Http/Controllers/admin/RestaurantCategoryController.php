@@ -60,7 +60,7 @@ class RestaurantCategoryController extends Controller
             "slug" => Str::slug($request->name),
             "image_path" => $imagePath,
         ]);
-        return redirect('/admin/restaurantCategories')
+        return redirect('/admin/restaurant-categories')
             ->with("success", "New Category Has Been Added Successfully");
     }
 
@@ -113,8 +113,8 @@ class RestaurantCategoryController extends Controller
                 "slug" => Str::slug($request->input("name")),
                 "image_path" => $imagePath ?? $oldPath,
             ]);
-        return redirect("/admin/restaurantCategories")
-            ->with("success", "{$category->name} Category Has Been Updated Successfully");
+        return redirect("/admin/restaurant-categories")
+            ->with("success", "{$request->name} Category Has Been Updated Successfully");
     }
 
     /**
@@ -128,7 +128,7 @@ class RestaurantCategoryController extends Controller
         $category = RestaurantCategory::where("id", $id)->firstOrFail();
         Storage::disk('public')->delete($category->image_path);
         $category->delete();
-        return redirect("/admin/restaurantCategories")
+        return redirect("/admin/restaurant-categories")
             ->with("success", "{$category->name} Category Has Been Deleted Successfully");
     }
 }

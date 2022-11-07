@@ -153,6 +153,7 @@
                     </tbody>
                 </table>
             </div>
+            <div id="map" style="width: 600px; height: 450px; background: #eee; border: 2px solid #aaa;"></div>
             <div class="mapouter">
                 <div class="gmap_canvas">
                     <iframe width="600" height="400" id="gmap_canvas"
@@ -176,4 +177,14 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        var myMap = new L.Map('map', {
+            key: 'YOUR_API_KEY',
+            maptype: 'dreamy',
+            poi: true,
+            traffic: false,
+            center: [35.699739, 51.338097],
+            zoom: 14
+        });
+    </script>
 </x-seller-app-layout>

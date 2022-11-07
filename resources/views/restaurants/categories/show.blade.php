@@ -6,7 +6,7 @@
                             p-4">{{$category->name}}</p>
             </div>
             <div class="">
-                <form action="{{url("/admin/restaurantCategories/{$category->id}")}}" method="POST">
+                <form action="{{url("/admin/restaurant-categories/{$category->id}")}}" method="POST">
                     @csrf
                     @method("DELETE")
                     <button type="submit"
@@ -16,7 +16,7 @@
                 </form>
             </div>
             <div>
-                <a href="{{url("/admin/restaurantCategories/{$category->id}/edit")}}">
+                <a href="{{url("/admin/restaurant-categories/{$category->id}/edit")}}">
                     <button type="submit"
                             class="hover:bg-cyan-500 px-10 w-full font-bold text-lg py-3
                             bg-cyan-600 text-white rounded-2xl">

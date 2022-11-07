@@ -10,7 +10,7 @@
         <div class="mx-auto text-center">
             <div class="mt-5">
                 @auth('admin')
-                    <a href="{{url("/admin/restaurantCategories/create")}}">
+                    <a href="{{url("/admin/restaurant-categories/create")}}">
                         <button class="font-bold hover:bg-blue-500 px-5 py-3 bg-blue-600 text-white rounded-2xl">
                             Add New Category For Restaurant
                         </button>
@@ -21,7 +21,7 @@
                 <div class="flex flex-wrap m-4 gap-3">
                     @forelse($categories as $category)
                         <div class=" lg:w-1/4 md:w-1/2  w-full">
-                            <a href="{{url("/admin/restaurantCategories/{$category->id}")}}">
+                            <a href="{{url("/admin/restaurant-categories/{$category->id}")}}">
                                 <img class="h-full w-full hover:border-green-500 border-2 rounded-full border-red-500
                             rounded-full cursor-pointer"
                                      src="{{asset("storage/".$category->image_path)}}"

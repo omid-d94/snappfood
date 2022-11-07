@@ -8,7 +8,7 @@
     <!-- Create New Category for Restaurant -->
         <div class="mx-auto text-center">
             <div class="mt-5">
-                <a href="{{url("/admin/foodCategories/create")}}">
+                <a href="{{url("/admin/food-categories/create")}}">
                     <button class="font-bold hover:bg-blue-500 px-5 py-3 bg-blue-600 text-white rounded-2xl">
                         Add New Category For Foods
                     </button>
@@ -19,7 +19,7 @@
                     @forelse($foodCategories as $category)
                         <div class=" lg:w-1/4 md:w-1/2  w-full">
 
-                            <a href="{{url("/admin/foodCategories/{$category->id}")}}">
+                            <a href="{{url("/admin/food-categories/{$category->id}")}}">
                                 <img class="h-full w-full hover:border-green-500 border-2 rounded-full border-red-500
                             rounded-full cursor-pointer"
                                      src="{{asset("storage/".$category->image_path)}}"
