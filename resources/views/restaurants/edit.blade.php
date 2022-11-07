@@ -36,12 +36,12 @@
                             <div>
                                 <label for="open">Open</label>
                                 <input type="radio" name="is_open" id="open"
-                                       value="1" {{$restaurant->is_open?" checked":""}}>
+                                       value="1" {{($restaurant->is_open=="Open")?" checked":""}}>
                             </div>
                             <div>
                                 <label for="close">Close</label>
                                 <input type="radio" name="is_open" id="close"
-                                       value="0" {{!$restaurant->is_open?"checked":""}}>
+                                       value="0" {{($restaurant->is_open=="Close")?"checked":""}}>
                             </div>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                         <label class="font-semibold text-gray-700" for="logo">Restaurant
                             Logo</label>
                         <input class="cursor-pointer rounded-lg hover:bg-blue-100 font-semibold "
-                               value="{{old("logo")}}" type="file" name="logo" id="image" required>
+                               value="{{old("logo")}}" type="file" name="logo" id="image">
                     </div>
                     <!-- Bank Account Number -->
                     <div class="flex gap-4 p-8 items-center rounded-t-lg">
@@ -89,7 +89,7 @@
                         </label>
                         <input
                             class="border-2 border-red-200 rounded-lg hover:bg-blue-100 font-semibold "
-                            value="{{$restaurant->send_cost}}" type="text" name="send_cost" id="send_cost" required>
+                            value="{{$restaurant->send_cost}}" type="text" name="send_cost" id="send_cost">
                     </div>
 
                     <!-- Schedule -->
@@ -130,6 +130,9 @@
                                     rounded-xl">Save Change
                     </button>
                 </div>
+                @if($errors->any())
+                    {{--                    @dd($errors)--}}
+                @endif
 
             </div>
         </form>

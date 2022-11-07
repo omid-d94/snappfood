@@ -63,4 +63,11 @@ class Restaurant extends Model
             set: fn($value) => ($value == "Free") ? 0 : $value
         );
     }
+
+    public function isOpen(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => (!$value) ? "Close" : "Open"
+        );
+    }
 }

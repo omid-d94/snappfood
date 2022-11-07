@@ -29,7 +29,7 @@ class FoodCategoryController extends Controller
     public function index()
     {
         $foodCategories = FoodCategory::all();
-        return view("categories.foods.index", compact("foodCategories"));
+        return view("foods.categories.index", compact("foodCategories"));
     }
 
     /**
@@ -39,7 +39,7 @@ class FoodCategoryController extends Controller
      */
     public function create()
     {
-        return view("categories.foods.create");
+        return view("foods.categories.create");
     }
 
     /**
@@ -70,7 +70,7 @@ class FoodCategoryController extends Controller
     public function show($id)
     {
         return view(
-            view: "categories.foods.show",
+            view: "foods.categories.show",
             data: ["category" => FoodCategory::where("id", $id)->firstOrFail()]);
     }
 
@@ -83,7 +83,7 @@ class FoodCategoryController extends Controller
     public function edit($id)
     {
         $category = FoodCategory::where("id", $id)->firstOrFail();
-        return view("categories.foods.edit", compact("category"));
+        return view("foods.categories.edit", compact("category"));
     }
 
     /**

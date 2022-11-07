@@ -67,6 +67,7 @@
                                 @endfor
                             </div>
                         </div>
+                        <p class="font-semibold pb-3">Status: {{$restaurant->is_open}}</p>
                         <p class="font-semibold pb-3">Phone: {{$restaurant->phone}}</p>
                         <p class="font-semibold pb-3">Send
                             Cost: {{ $restaurant->send_cost}} {{($restaurant->send_cost=="Free")?"":"T"}}</p>
