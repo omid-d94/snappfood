@@ -9,7 +9,9 @@ class Address extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["user_id", "address_id"];
+    protected $fillable = ["title", "latitude", "longitude", "address", "default"];
+
+    protected $casts = ["default" => "boolean"];
 
     public function users()
     {
