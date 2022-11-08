@@ -17,13 +17,25 @@
 
             @forelse($restaurants as $restaurant)
                 <div class="flex justify-around items-center p-16">
-                    <div>
-                        <a href="{{url("/seller/restaurants/{$restaurant->id}/edit")}}">
-                            <button class="px-5 font-semibold py-12 rounded-lg bg-cyan-600 text-white
+                    <div class="flex flex-col gap-2 items-center">
+                        <div>
+                            <a href="{{url("/seller/restaurants/{$restaurant->id}/edit")}}">
+                                <button class="px-5 font-semibold py-5 rounded-lg bg-cyan-600 text-white
                             hover:bg-cyan-500">
-                                Edit<br>Restaurant<br>Info
-                            </button>
-                        </a>
+                                    Edit<br>Restaurant<br>Info
+                                </button>
+                            </a>
+                        </div>
+                        <div>
+                            <form action="{{url("/seller/restaurants/{$restaurant->id}")}}" method="POST">
+                                @csrf
+                                @method("DELETE")
+                                <button class="px-8 font-semibold py-3 rounded-lg bg-red-600 text-white
+                            hover:bg-red-500">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
                     </div>
                     <div class=" lg:w-1/4 md:w-1/2  w-full">
                         <h1 class="font-bold text-gray-800 text-2xl text-center">{{$restaurant->title}}</h1>
