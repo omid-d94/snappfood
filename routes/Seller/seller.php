@@ -6,7 +6,7 @@ use App\Http\Controllers\Seller\RestaurantController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::prefix("seller")->group(function () {
+Route::prefix("seller")->middleware(["seller"])->group(function () {
 
     Route::resource("restaurants", RestaurantController::class)
         ->name("index", "seller.restaurants.index");
