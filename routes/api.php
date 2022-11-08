@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\User\AddressController;
 use App\Http\Controllers\User\AuthenticationUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,4 +28,6 @@ Route::post("/register", [AuthenticationUserController::class, "store"]);
 //private routes
 Route::middleware("auth:sanctum")->group(function () {
     Route::post("/logout", [AuthenticationUserController::class, "logout"]);
+    Route::resource("addresses", AddressController::class);
+    Route::post("/addresses/{address}",[AddressController::class,"setDefaultAddress"]);
 });
