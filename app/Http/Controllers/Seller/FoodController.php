@@ -6,9 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Foods\FoodRequest;
 use App\Models\Food;
 use App\Models\FoodCategory;
-
 //use Illuminate\Http\Request;
-
 use App\Models\Restaurant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -24,8 +22,7 @@ class FoodController extends Controller
     public function index()
     {
         $restaurant = auth("seller")->user()->restaurants->first();
-        $foods = Food::where("restaurant_id", $restaurant?->id)->get();
-//        dd($foods);
+        $foods = DB::table("foods")->where("restaurant_id", $restaurant?->id)->paginate(10);
         return view("foods.index", compact("foods"));
     }
 

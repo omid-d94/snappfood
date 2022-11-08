@@ -19,7 +19,7 @@
 
         <div class=" m-5 shadow-lg">
 
-            <div class="mx-10 my-5 p-16 flex items-center justify-center">
+            <div class="mx-10 my-5 p-16 flex flex-col justify-center">
                 <table class="text-center ">
                     <thead class="bg-cyan-900 text-white">
                     <tr>
@@ -62,7 +62,6 @@
                                     </button>
                                 </form>
                             </td>
-
                         </tr>
                     @empty
                         <tr>
@@ -73,6 +72,9 @@
                     @endforelse
                     </tbody>
                 </table>
+                <div>
+                    {{ $foods->links() }}
+                </div>
             </div>
         </div>
     </section>
