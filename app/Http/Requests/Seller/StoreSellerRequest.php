@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Seller;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules;
 
 class StoreSellerRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class StoreSellerRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +25,10 @@ class StoreSellerRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:sellers'],
+            'phone' => ['required', 'regex:/(\+989)\d{9}/', 'unique:sellers'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ];
     }
 }

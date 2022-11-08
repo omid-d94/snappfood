@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreSellerRequest;
+use App\Http\Requests\Seller\StoreSellerRequest;
 use App\Http\Requests\UpdateSellerRequest;
 use App\Models\Seller;
 
@@ -32,7 +32,7 @@ class SellerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreSellerRequest  $request
+     * @param  \App\Http\Requests\Seller\StoreSellerRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreSellerRequest $request)
