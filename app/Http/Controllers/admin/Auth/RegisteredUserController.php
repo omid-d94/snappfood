@@ -6,8 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
+
 //use Illuminate\Http\Request;
-use App\Http\Requests\Admin\Auth\LoginRequest as Request;
+use App\Http\Requests\Admin\AdminRegisterRequest as Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
@@ -27,20 +28,14 @@ class RegisteredUserController extends Controller
     /**
      * Handle an incoming registration request.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param \App\Http\Requests\Admin\AdminRegisterRequest $request
      * @return \Illuminate\Http\RedirectResponse
      *
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:admins'],
-            'phone' => ['required', 'regex:/(\+989)\d{9}/', 'unique:admins'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
-
+        $request->validated();
         $user = Admin::create([
             'name' => $request->name,
             'email' => $request->email,
