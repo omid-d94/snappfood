@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Http\Controllers\Admin\RestaurantCategoryController;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -49,7 +48,7 @@ class Restaurant extends Model
 
     /**
      * Relationship between seller and restaurant is one to many
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function seller()
     {
