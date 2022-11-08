@@ -107,7 +107,7 @@ class RestaurantCategoryController extends Controller
             Storage::disk('public')->delete($oldPath);
             $imagePath = Storage::disk('public')->put('images/categories/restaurants', $request->file("image"));
         }
-        $category = RestaurantCategory::where("id", $id)
+        RestaurantCategory::where("id", $id)
             ->update([
                 "name" => $request->input("name"),
                 "slug" => Str::slug($request->input("name")),

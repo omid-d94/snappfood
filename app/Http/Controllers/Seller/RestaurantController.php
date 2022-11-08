@@ -59,8 +59,7 @@ class RestaurantController extends Controller
 
         $validated["status"] = true;
         $restaurant = Restaurant::create($validated);
-
-        foreach ($request->day as $day => $time) {
+        foreach ($request?->day as $day => $time) {
             WorkingTime::create([
                 'day' => $day,
                 'start' => $time[0],
@@ -142,9 +141,6 @@ class RestaurantController extends Controller
     {
         Storage::disk('public')->delete($restaurant->logo);
         $restaurant->delete();
-        $working_time_id = $restaurant->workingTimes()->delete();
-        //cascade restaurant_working_time
-        $restaurant->workingTimes()->detach($working_time_id);
 
         return redirect("/seller/restaurants")
             ->with("success", "Congradulation!☺ {$restaurant->title} Has Been Deleted Successfully");
