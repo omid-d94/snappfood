@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Foods\FoodRequest;
 use App\Models\Food;
 use App\Models\FoodCategory;
+
 //use Illuminate\Http\Request;
 use App\Models\Restaurant;
 use Illuminate\Support\Facades\Auth;
@@ -53,7 +54,7 @@ class FoodController extends Controller
         $validated["restaurant_id"] = auth("seller")->user()->restaurants->firstOrFail()->id;
         $validated["food_category"] = FoodCategory::where("title", $request->type)->firstOrFail()->id;
         $food = Food::create($validated);
-
+        auth("seller")->user()->restaurants->firstOrFail()->foodCategories()->attach($validated["food_category"]);
         return redirect("/seller/foods")
             ->with("success", "Congradulation!☺ {$food->title} Has Been Created Successfully");
 
@@ -103,7 +104,8 @@ class FoodController extends Controller
             $imagePath = Storage::disk('public')->put('images/foods', $request->file("image_path"));
         }
 
-//        $validated["food_category"] = $food->foodCategory->id;
+        $validated["food_category"] = $request->foodCategory;
+        auth("seller")->user()->restaurants->firstOrFail()->foodCategories()->sync($validated["food_category"]);
         $validated['image_path'] = $imagePath ?? $oldPath;
         $food->update($validated);
 
