@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\User\RestaurantController;
 use App\Http\Controllers\User\AddressController;
 use App\Http\Controllers\User\AuthenticationUserController;
 use Illuminate\Http\Request;
@@ -28,6 +29,16 @@ Route::post("/register", [AuthenticationUserController::class, "store"]);
 //private routes
 Route::middleware("auth:sanctum")->group(function () {
     Route::post("/logout", [AuthenticationUserController::class, "logout"]);
+
+    /* Addresses Routes */
     Route::resource("addresses", AddressController::class);
-    Route::post("/addresses/{address}",[AddressController::class,"setDefaultAddress"]);
+    Route::post("/addresses/{address}", [AddressController::class, "setDefaultAddress"]);
+
+    /* Restaurants Routes */
+    Route::get("/restaurants", [RestaurantController::class, "index"]);///{params?}
+    Route::get("/restaurants/{restaurant}", [RestaurantController::class, "show"]);
+
+    /* Foods of Restaurant Routes */
+    Route::get("/restaurants/{restaurant}/foods", [RestaurantController::class, "getFoods"]);
+
 });
