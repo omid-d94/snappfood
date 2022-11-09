@@ -29,6 +29,20 @@ class Restaurant extends Model
     }
 
     /**
+     * Relationship between Food Category adn Restaurant is Many to Many
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function foodCategories()
+    {
+        return $this->belongsToMany(
+            FoodCategory::class,
+            "food_category_restaurant",
+            "restaurant_id",
+            "food_category_id"
+        );
+    }
+
+    /**
      * Relationship between restaurant and food  is One to many
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -63,10 +77,51 @@ class Restaurant extends Model
         );
     }
 
+    /**
+     * use accessor for is_open property
+     * true -> open , false -> close
+     * @return Attribute
+     */
     public function isOpen(): Attribute
     {
         return Attribute::make(
             get: fn($value) => (!$value) ? "Close" : "Open"
         );
+    }
+
+    /**
+     * query scope for is_open property
+     *
+     * @param $query
+     * @param $isOpen
+     * @return mixed
+     */
+    public function scopeIsOpen($query, $isOpen)
+    {
+        return $query->orWhere("is_open", $isOpen);
+    }
+
+    /**
+     * query scope for type property
+     *
+     * @param $query
+     * @param $type
+     * @return mixed
+     */
+    public function scopeType($query, $type)
+    {
+        return $query->orWhere("type", $type);
+    }
+
+    /**
+     * query scope for score greater than a value
+     *
+     * @param $query
+     * @param $score
+     * @return mixed
+     */
+    public function scopeScoreGreaterThan($query, $score)
+    {
+        return $query->orWhere("score", ">", $score);
     }
 }
