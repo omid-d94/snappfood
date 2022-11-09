@@ -13,9 +13,13 @@ class FoodCategory extends Model
 
     protected $fillable = ["title", "slug", "image_path"];
 
+    /**
+     * Relationship between food category and food is one to many
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function foods()
     {
-        return $this->hasMany(Food::class);
+        return $this->hasMany(Food::class,"food_category");
     }
 
 
@@ -24,6 +28,20 @@ class FoodCategory extends Model
         return Attribute::make(
             get: fn($value) => Str::title($value),
             set: fn($value) => strtolower($value)
+        );
+    }
+
+    /**
+     * Relationship between Food Category and Restaurant is Many to Many
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function restaurants()
+    {
+        return $this->belongsToMany(
+            Restaurant::class,
+            "food_category_restaurant",
+            "food_category_id",
+            "restaurant_id"
         );
     }
 }
