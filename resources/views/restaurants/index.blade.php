@@ -71,6 +71,7 @@
                     </div>
                     <div>
                         <p class="font-semibold pb-3">Address: {{$restaurant->address}}</p>
+                        <p class="font-semibold pb-3">Type: {{$restaurant->restaurantCategory->name}}</p>
                         <div class="flex items-center pb-3 gap-3">
                             <span class="font-semibold">Score: </span>
                             <div class="flex gap-1">
