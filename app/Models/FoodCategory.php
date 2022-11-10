@@ -11,6 +11,8 @@ class FoodCategory extends Model
 {
     use HasFactory;
 
+    protected $table = "food_categories";
+
     protected $fillable = ["title", "slug", "image_path"];
 
     /**
@@ -19,7 +21,7 @@ class FoodCategory extends Model
      */
     public function foods()
     {
-        return $this->hasMany(Food::class,"food_category");
+        return $this->hasMany(Food::class, "food_category");
     }
 
 
