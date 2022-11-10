@@ -20,14 +20,20 @@
                         </x-nav-link>
 
                         <!-- Restaurant Category -->
-                        <x-nav-link :href="route('restaurant-categories.index')" :active="request()->routeIs('admin
-                        .restaurant-categories')">
+                        <x-nav-link :href="route('restaurant-categories.index')"
+                                    :active="request()->routeIs('restaurant-categories.index')">
                             {{ __('Restaurants') }}
                         </x-nav-link>
                         <!-- Food Category -->
-                        <x-nav-link :href="route('food-categories.index')" :active="request()->routeIs('admin
-                        .food-categories')">
+                        <x-nav-link :href="route('food-categories.index')"
+                                    :active="request()->routeIs('food-categories.index')">
                             {{ __('Foods') }}
+                        </x-nav-link>
+
+                        <!-- Discounts -->
+                        <x-nav-link :href="route('discounts.index')"
+                                    :active="request()->routeIs('discounts.index')">
+                            {{ __('Discounts') }}
                         </x-nav-link>
                     @endauth
                 </div>
