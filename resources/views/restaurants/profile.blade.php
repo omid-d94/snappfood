@@ -206,7 +206,7 @@
 
     <script type="text/javascript">
         var myMap = new L.Map('map', {
-            key: '{{env("NESHAN_API_KEY")}}',
+            key: 'web.21db42cac1c0476aaa730307bf676874',
             maptype: 'dreamy',
             poi: true,
             traffic: false,
