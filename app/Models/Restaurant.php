@@ -96,9 +96,9 @@ class Restaurant extends Model
      * @param $isOpen
      * @return mixed
      */
-    public function scopeIsOpen($query, $isOpen)
+    public function scopeRestaurantIsOpen($query, $isOpen)
     {
-        return $query->orWhere("is_open", $isOpen);
+        return $query->where("is_open", $isOpen);
     }
 
     /**
@@ -110,7 +110,7 @@ class Restaurant extends Model
      */
     public function scopeType($query, $type)
     {
-        return $query->orWhere("type", $type);
+        return $query->where("type", $type);
     }
 
     /**
@@ -122,6 +122,6 @@ class Restaurant extends Model
      */
     public function scopeScoreGreaterThan($query, $score)
     {
-        return $query->orWhere("score", ">", $score);
+        return $query->where("score", ">", $score);
     }
 }
