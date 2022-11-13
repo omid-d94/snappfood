@@ -58,7 +58,7 @@ class AddressController extends Controller
      */
     public function show($address)
     {
-        $address = Address::where("id", $address)->first();
+        $address = auth()->user()->addresses->where("id", $address)->first();
         if ($address)
             return response(new AddressResource($address));
         return response(["message" => "Address Not Found!"], 404);
@@ -86,7 +86,8 @@ class AddressController extends Controller
     public function update(UpdateRequest $request, Address $address)
     {
         $validated = $request->validated();
-        if ($address->exists) {
+
+        if ($address->exists && auth()->user()->addresses->contains($address)) {
             $address->update($validated);
             return response(["message" => "Address updated successfully"], 201);
         }
@@ -101,7 +102,7 @@ class AddressController extends Controller
      */
     public function destroy(Address $address)
     {
-        if ($address->exists) {
+        if ($address->exists && auth()->user()->addresses->contains($address)) {
             $address->delete();
             return response(["message" => "Address deleted successfully"]);
         }
@@ -112,11 +113,14 @@ class AddressController extends Controller
     public function setDefaultAddress(Address $address)
     {
         $addresses = auth("sanctum")->user()->addresses;
-        collect($addresses)->map(fn($address) => $address->update(["default" => false]));
-        if ($address->exists) {
+        if ($addresses->contains($address)) {
+            collect($addresses)->map(function ($userAddress) {
+                return $userAddress->update(["default" => false]);
+            });
+
             $address->update(["default" => true]);
             return response(["message" => "Current address updated successfully"], 201);
         }
-        return response(["message" => "fail to set default address"], 405);
+        return response(["message" => "Fail to set default address! Address not found."], 405);
     }
 }
