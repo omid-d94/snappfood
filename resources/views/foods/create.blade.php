@@ -31,7 +31,7 @@
                                 name="type" id="type" required>
                             <option selected>Choose...</option>
                             @foreach($categories as $category)
-                                <option value="{{$category->title}}">{{ucfirst($category->title)}}</option>
+                                <option value="{{$category->id}}">{{ucfirst($category->title)}}</option>
                             @endforeach
                         </select>
                     </div>
