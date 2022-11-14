@@ -13,9 +13,11 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use App\Http\Requests\User\UserRegisterRequest as RegisterRequest;
 use App\Http\Requests\User\UserLoginRequest as LoginRequest;
+use App\Http\Requests\User\UserUpdateRequest as UpdateRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
+use function PHPUnit\Framework\isEmpty;
 
 
 class AuthenticationUserController extends Controller
@@ -31,16 +33,6 @@ class AuthenticationUserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param \App\Http\Requests\User\UserRegisterRequest $request
@@ -51,53 +43,72 @@ class AuthenticationUserController extends Controller
         $validated = $request->validated();
         $validated["password"] = Hash::make($request->password);
         $user = User::create($validated);
-//        $token = $user->createToken($user->name)->PlainTextToken;
-        return response(new UserResource($user), Response::HTTP_CREATED);
+        $token = $user->createToken($user->name)->plainTextToken;
+        return response(
+            [
+                "Message" => "Registration is complete.",
+                "Info:" => new UserResource($user),
+                "Token" => $token,
+            ], Response::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\User $user
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(int $id)
     {
-        //
+        $user = User::where("id", $id)->first();
+        if ($user?->id === auth()->user()->id) {
+            return response(new UserResource($user), 200);
+        }
+        return response("USER NOT FOUND!", 404);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Models\User $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\User $user
+     * @param \App\Http\Requests\User\UserUpdateRequest $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateRequest $request, int $id)
     {
-        //
+        $user = User::where("id", $id)->first();
+
+        if (auth()->user()->id !== $user?->id)
+            return response("USER NOT FOUND!", 404);
+
+        $validated = $request->validated();
+        $validated["password"] = Hash::make($request->password);
+        $user->update($validated);
+
+        return response(
+            ["message" => "User updated successfully"],
+            Response::HTTP_NO_CONTENT
+        );
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\User $user
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        //
+        $user = User::where("id", $id)->first();
+        if (auth()->user()->id === $user?->id) {
+            $user->delete();
+            $user->tokens()->delete();
+            return response(
+                ["message" => "User deleted successfully"],
+                Response::HTTP_NO_CONTENT);
+        }
+        return response("USER NOT FOUND!", 404);
     }
 
     /**
