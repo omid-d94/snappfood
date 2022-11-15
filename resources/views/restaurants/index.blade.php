@@ -16,7 +16,7 @@
         <div class=" m-5 shadow-lg">
 
             @forelse($restaurants as $restaurant)
-                <div class="flex justify-around items-center p-16">
+                <div class="flex justify-between items-center p-16">
                     <div class="flex flex-col gap-2 items-center">
                         <div>
                             <a href="{{url("/seller/restaurants/{$restaurant->id}/edit")}}">
@@ -69,7 +69,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div>
+                    <div class="w-1/4">
                         <p class="font-semibold pb-3">Address: {{$restaurant->address}}</p>
                         <p class="font-semibold pb-3">Type: {{$restaurant->restaurantCategory->name}}</p>
                         <div class="flex items-center pb-3 gap-3">
