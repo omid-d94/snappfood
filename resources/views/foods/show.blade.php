@@ -21,6 +21,14 @@
                 <span class="text-xl font-bod text-gray-700 pt-4">{{$food->price}}</span>
             </div>
             <div>
+                <span class="text-red-800">Discount: </span>
+                <span class="text-xl font-bod text-gray-700 pt-4">{{($discount->title)??"No Discount"}}</span>
+            </div>
+            <div>
+                <span class="text-red-800">Discounted Price: </span>
+                <span class="text-xl font-bod text-gray-700 pt-4">{{(($discount->factor)??1)*$food->price}}</span>
+            </div>
+            <div>
                 <span class="text-red-800">Raw Material: </span>
                 <span class="text-xl font-bod text-gray-700 pt-4">{{$food->raw_material}}</span>
             </div>
