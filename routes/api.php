@@ -49,6 +49,7 @@ Route::middleware("auth:sanctum")->group(function () {
     Route::resource("addresses", AddressController::class);
     Route::post("/addresses/{address}", [AddressController::class, "setDefaultAddress"]);
     Route::put("/addresses/{address}", [AddressController::class, "update"]);
+    Route::delete("/addresses/{address}", [AddressController::class, "destroy"]);
 
     /* Restaurants Routes */
     Route::get("/restaurants", [RestaurantController::class, "index"]);///{params?}
