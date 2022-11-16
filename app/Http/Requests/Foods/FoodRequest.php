@@ -26,7 +26,9 @@ class FoodRequest extends FormRequest
         return [
             "title" => ["required", "string", "between:2,200"],
             "raw_material" => ["string", "between:0,500"],
+            "food_category" => ["required", "exists:food_categories,id"],
             "price" => ["required", "numeric"],
+            "discount_id" => [""],
             "image" => ["mimes:jpg,gif,png,svg,jpeg", "max:3072"],
         ];
     }

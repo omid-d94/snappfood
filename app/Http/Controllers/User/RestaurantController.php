@@ -6,14 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\FoodCategoryCollection;
 use App\Http\Resources\RestaurantCollection;
 use App\Http\Resources\RestaurantResource;
-use App\Models\Food;
-use App\Models\FoodCategory;
 use App\Models\Restaurant;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
-use mysql_xdevapi\Exception;
 
 class RestaurantController extends Controller
 {
