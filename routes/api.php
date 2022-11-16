@@ -28,11 +28,28 @@ Route::post("/register", [AuthenticationUserController::class, "store"]);
 
 //private routes
 Route::middleware("auth:sanctum")->group(function () {
+    /* CRUD User, Logout Routes */
     Route::post("/logout", [AuthenticationUserController::class, "logout"]);
+    /* update user */
+    Route::put("/update/user/{user}", [AuthenticationUserController::class, "update"])
+        ->whereNumber("user")
+        ->name("user.update");
+
+    /* delete user */
+    Route::delete("/delete/user/{user}", [AuthenticationUserController::class, "destroy"])
+        ->whereNumber("user")
+        ->name("user.delete");
+
+    /* show user info */
+    Route::get("/info/user/{user}", [AuthenticationUserController::class, "show"])
+        ->whereNumber("user")
+        ->name("user.show");
 
     /* Addresses Routes */
     Route::resource("addresses", AddressController::class);
     Route::post("/addresses/{address}", [AddressController::class, "setDefaultAddress"]);
+    Route::put("/addresses/{address}", [AddressController::class, "update"]);
+    Route::delete("/addresses/{address}", [AddressController::class, "destroy"]);
 
     /* Restaurants Routes */
     Route::get("/restaurants", [RestaurantController::class, "index"]);///{params?}

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +25,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        try {
+            DB::connection()->getPDO();
+        } catch (Exception $e) {
+            echo "ERROR! CAN NOT CONNECT TO DATABASE." . PHP_EOL;
+        }
     }
 }

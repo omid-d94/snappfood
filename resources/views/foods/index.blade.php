@@ -27,6 +27,8 @@
                         <td class="px-5 py-3 font-bold text-lg border-r-2 border-white">Title</td>
                         <td class="px-5 py-3 font-bold text-lg border-r-2 border-white">Raw Material</td>
                         <td class="px-5 py-3 font-bold text-lg border-r-2 border-white">Price</td>
+                        <td class="px-5 py-3 font-bold text-lg border-r-2 border-white">Discount</td>
+                        <td class="px-5 py-3 font-bold text-lg border-r-2 border-white">Discounted Price</td>
                         <td class="px-5 py-3 font-bold text-lg " colspan="3">Action</td>
                     </tr>
 
@@ -41,6 +43,10 @@
                             <td class="border-r-2 border-cyan-900 px-5 py-3 font-semibold">{{$food->title}}</td>
                             <td class="border-r-2 border-cyan-900 px-5 py-3 font-semibold">{{$food->raw_material}}</td>
                             <td class="border-r-2 border-cyan-900 px-5 py-3 font-semibold">{{$food->price}}</td>
+                            <td class="border-r-2 border-cyan-900 px-5 py-3
+                            font-semibold">{{($food->discount->percent)??0}}%</td>
+                            <td class="border-r-2 border-cyan-900 px-5 py-3
+                            font-semibold">{{($food->price)*(($food->discount->factor)??1)}}</td>
                             <td class="px-5 py-3 font-semibold bg-green-600 text-white
                             cursor-pointer hover:bg-green-500 ">
                                 <a href="{{url("/seller/foods/{$food->id}")}}">
@@ -65,7 +71,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td class="px-5 py-3" colspan="5">
+                            <td class="px-5 py-3" colspan="7">
                                 <span class="text-xl text-red-600 font-semibold">☺ THE FOOD MENU IS EMPTY! ☺</span>
                             </td>
                         </tr>
@@ -73,7 +79,7 @@
                     </tbody>
                 </table>
                 <div>
-                    {{ $foods->links() }}
+{{$foods->links()}}
                 </div>
             </div>
         </div>

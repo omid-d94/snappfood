@@ -5,11 +5,11 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    @if(Auth::guard("admin"))
+                    @auth("admin")
                         <a href="{{ route('admin.dashboard') }}">
                             <x-nav-logo class="w-10 h-10 rounded-full"/>
                         </a>
-                    @endif
+                    @endauth
                 </div>
 
                 <!-- Navigation Links -->
@@ -45,7 +45,7 @@
                     <x-slot name="trigger">
                         <button
                             class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
-                            <div>{{ Auth::guard("admin")->user()->name }}</div>
+                            <div>{{ auth("admin")->user()->name }}</div>
 
                             <div class="ml-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -60,7 +60,7 @@
 
                     <x-slot name="content">
                         <!-- Authentication -->
-                        @if(Auth::guard("admin"))
+                        @auth("admin")
                             <form method="POST" action="{{ route('admin.logout') }}">
                                 @csrf
 
@@ -70,7 +70,7 @@
                                     {{ __('Log Out') }}
                                 </x-dropdown-link>
                             </form>
-                        @endif
+                        @endauth
                     </x-slot>
                 </x-dropdown>
             </div>
@@ -94,26 +94,26 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            @if(Auth::guard("admin"))
+            @auth("admin")
                 <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                     {{ __('Admin Dashboard') }}
                 </x-responsive-nav-link>
-            @endif
+            @endauth
 
         </div>
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
-                @if(Auth::guard("admin"))
-                    <div class="font-medium text-base text-gray-800">{{ Auth::guard("admin")->user()->name }}</div>
-                    <div class="font-medium text-sm text-gray-500">{{ Auth::guard("admin")->user()->email }}</div>
-                @endif
+                @auth("admin")
+                    <div class="font-medium text-base text-gray-800">{{ auth("admin")->user()->name }}</div>
+                    <div class="font-medium text-sm text-gray-500">{{ auth("admin")->user()->email }}</div>
+                @endauth
             </div>
 
             <div class="mt-3 space-y-1">
                 <!-- Authentication -->
-                @if(Auth::guard("admin"))
+                @auth("admin")
                     <form method="POST" action="{{ route('admin.logout') }}">
                         @csrf
 
@@ -123,7 +123,7 @@
                             {{ __('Log Out') }}
                         </x-responsive-nav-link>
                     </form>
-                @endif
+                @endauth
             </div>
         </div>
     </div>

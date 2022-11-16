@@ -25,10 +25,11 @@
                         <select class="border-2 border-red-200 rounded-lg hover:bg-blue-100 font-semibold "
                                 name="type" id="type" required>
                             @foreach($categories as $category)
-                                <option value="{{$category->name}}">{{ucfirst($category->name)}}</option>
+                                <option value="{{$category->id}}">{{ucfirst($category->name)}}</option>
                             @endforeach
                         </select>
                     </div>
+
                     {{-- Restaurant OPEN/CLOSE --}}
                     <div class="flex gap-4 p-8">
                         <span class="font-semibold text-gray-700">Status:</span>
@@ -75,21 +76,48 @@
                 </div>
                 <div class="flex justify-between py-3 pb-10 bg-white border-t-4 border-gray-300 py-5 px-10 ">
                     <!-- Address -->
-                    <div class="flex flex-col items-start ">
-                        <label class="font-semibold text-gray-700 px-3" for="address">Address</label>
-                        <textarea
-                            class="border-2 border-red-200 text-lg rounded-lg hover:bg-blue-100 font-semibold "
-                            name="address" cols="30" rows="5" id="address" required>{{$restaurant->address}}</textarea>
+                    <div>
+                        <div class="flex flex-col items-start mb-3">
+                            <label class="font-semibold text-gray-700 px-3" for="address">Address</label>
+                            <textarea
+                                class="border-2 border-red-200 text-lg rounded-lg hover:bg-blue-100 font-semibold "
+                                name="address" cols="30" rows="5" id="address"
+                                required>{{$restaurant->address}}</textarea>
+                        </div>
+                        {{-- Latitude --}}
+                        <div class="flex flex-col items-start mb-3">
+                            <label class="font-semibold text-gray-700 px-3" for="latitude">Latitude</label>
+                            <input class="px-3 border-2 w-full border-blue-200 rounded-lg hover:bg-blue-100
+                            font-semibold "
+                                   name="latitude" id="latitude" value="{{$restaurant->latitude}}" required>
+                            @error("latitude")
+                            <span class="font-semibold text-lg text-red-600">{{$message}}</span>
+                            @enderror
+                        </div>
+                        {{-- Longitude --}}
+                        <div class="flex flex-col mb-3 items-start ">
+                            <label class="font-semibold text-gray-700 px-3" for="longitude">Longitude</label>
+                            <input class="px-3 border-2 w-full border-blue-200 rounded-lg hover:bg-blue-100
+                            font-semibold "
+                                   name="longitude" id="longitude" value="{{$restaurant->longitude}}" required>
+                            @error("longitude")
+                            <span class="font-semibold text-lg text-red-600">{{$message}}</span>
+                            @enderror
+                        </div>
+                        <!-- Send Cost -->
+                        <div class="flex flex-col items-start rounded-t-lg">
+                            <label class="font-semibold px-3 text-gray-700" for="send_cost">
+                                Send Cost
+                            </label>
+                            <input
+                                class="border-2 border-red-200 rounded-lg hover:bg-blue-100 font-semibold "
+                                value="{{$restaurant->send_cost}}" type="text" name="send_cost" id="send_cost">
+                        </div>
                     </div>
-
-                    <!-- Send Cost -->
-                    <div class="flex gap-4 p-8 items-center rounded-t-lg">
-                        <label class="font-semibold text-gray-700" for="send_cost">
-                            Send Cost
-                        </label>
-                        <input
-                            class="border-2 border-red-200 rounded-lg hover:bg-blue-100 font-semibold "
-                            value="{{$restaurant->send_cost}}" type="text" name="send_cost" id="send_cost">
+                    {{-- Map --}}
+                    <div class="shadow-xl "
+                         id="map"
+                         style="width: 400px; height: 400px; background: #eee; border: 2px solid #aaa;">
                     </div>
 
                     <!-- Schedule -->
@@ -125,16 +153,62 @@
                     </div>
 
                 </div>
+
+
                 <div class="self-end pb-10 text-center">
-                    <button type="submit" class="font-bold text-lg px-14 py-3 bg-blue-600 text-white
-                                    rounded-xl">Save Change
+                    <button type="submit"
+                            class="font-bold text-lg px-14 py-3 bg-blue-600 text-white rounded-xl
+                            hover:bg-blue-500">Save
+                        Change
                     </button>
                 </div>
                 @if($errors->any())
-                    {{--                    @dd($errors)--}}
+                    {{--                                        @dd($errors)--}}
                 @endif
 
             </div>
         </form>
     </div>
+
+    {{-- Map --}}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="text/javascript">
+        var map, latitude, longitude, marker, latLong, address;
+        latitude = document.querySelector('#latitude');
+        longitude = document.querySelector('#longitude');
+        console.log(parseFloat(latitude.value) + "," + parseFloat(longitude.value));
+        address = document.querySelector('#address');
+        map = new L.Map('map', {
+            key: 'web.21db42cac1c0476aaa730307bf676874',
+            maptype: 'dreamy',
+            poi: true,
+            traffic: false,
+            center: [parseFloat(latitude.value), parseFloat(longitude.value)],
+            zoom: 20
+        });
+        map.on('click', function (e) {
+            latitude.value = e.latlng.lat.toString();
+            longitude.value = e.latlng.lng.toString();
+            axios({
+                method: "GET",
+                url: "https://api.neshan.org/v5/reverse",
+                params: {
+                    lat: latitude.value,
+                    lng: longitude.value,
+                },
+                headers: {
+                    'Api-key': 'service.8b88f801c9664f628249057c3a85f391',
+                }
+            }).then(
+                function (res) {
+                    console.log(res);
+                    address.value = res.data.formatted_address;
+                }
+            ).catch(
+                err => alert("ERROR! CAN NOT RECEIVE ADDRESS BY LOCATION")
+            );
+
+        });
+    </script>
+
 </x-seller-app-layout>

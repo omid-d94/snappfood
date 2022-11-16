@@ -27,10 +27,10 @@ class RestaurantRequest extends FormRequest
         return [
             "title" => ["required", "string", "min:3", "max:150"],
             "address" => ["required", "string", "min:3", "max:500"],
-//            "longitude" => ["required", "string", "min:3", "max:20"],
-//            "latitude" => ["required", "string", "min:3", "max:20"],
+            "longitude" => ["required", "string", "max:255"],
+            "latitude" => ["required", "string", "max:255"],
             "logo" => ["mimes:jpg,gif,png,svg,jpeg", "max:3072"],
-            "type" => ["required"],
+            "type" => ["required", "exists:restaurant_categories,id"],
             "phone" => ["required", "string", "max:15"],
             "account" => ["required", "alpha_num", "between:10,15 "],
             "send_cost" => ["alpha_num"],

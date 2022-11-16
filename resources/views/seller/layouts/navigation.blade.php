@@ -5,32 +5,34 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    @if(Auth::guard("seller"))
+                    @auth("seller")
                         <a href="{{ route('seller.dashboard') }}">
                             <x-nav-logo class="w-10 h-10 rounded-full"/>
                         </a>
-                    @endif
+                    @endauth
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    @if(Auth::guard("seller"))
+                    @auth("seller")
                         <x-nav-link :href="route('seller.dashboard')"
                                     :active="request()->routeIs('seller.dashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
-                @endif
-                <!-- Restaurant Category -->
-                    <x-nav-link :href="route('seller.restaurants.index')"
-                                :active="request()->routeIs('seller.restaurants.index')">
-                        {{ __('Restaurants') }}
-                    </x-nav-link>
-                    <!-- Restaurant Setting -->
+                    @endauth
+                    @if(!empty(auth("seller")->user()->restaurants->toArray()))
+                    <!-- Restaurant Category -->
+                        <x-nav-link :href="route('seller.restaurants.index')"
+                                    :active="request()->routeIs('seller.restaurants.index')">
+                            {{ __('Restaurants') }}
+                        </x-nav-link>
+                        <!-- Restaurant Setting -->
 
-                    <x-nav-link :href="route('seller.foods.index')"
-                                :active="request()->routeIs('seller.foods.index')">
-                        {{ __('Foods') }}
-                    </x-nav-link>
+                        <x-nav-link :href="route('seller.foods.index')"
+                                    :active="request()->routeIs('seller.foods.index')">
+                            {{ __('Foods') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -40,7 +42,7 @@
                     <x-slot name="trigger">
                         <button
                             class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
-                            <div>{{ Auth::guard("seller")->user()->name }}</div>
+                            <div>{{ auth("seller")->user()->name }}</div>
 
                             <div class="ml-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -55,17 +57,17 @@
 
                     <x-slot name="content">
                         <!-- Authentication -->
-                        @if(Auth::guard("seller"))
+                        @auth("seller")
                             <form method="POST" action="{{ route('seller.logout') }}">
                                 @csrf
 
                                 <x-dropdown-link :href="route('seller.logout')"
                                                  onclick="event.preventDefault();
-                                                this.closest('form').submit();">
+                            this.closest('form').submit();">
                                     {{ __('Log Out') }}
                                 </x-dropdown-link>
                             </form>
-                        @endif
+                        @endauth
                     </x-slot>
                 </x-dropdown>
             </div>
@@ -89,37 +91,37 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            @if(Auth::guard("seller"))
+            @auth("seller")
                 <x-responsive-nav-link :href="route('seller.dashboard')" :active="request()->routeIs
-                ('seller.dashboard')">
+('seller.dashboard')">
                     {{ __('Seller Dashboard') }}
                 </x-responsive-nav-link>
-            @endif
+            @endauth
 
         </div>
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
-                @if(Auth::guard("seller"))
-                    <div class="font-medium text-base text-gray-800">{{ Auth::guard("seller")->user()->name }}</div>
-                    <div class="font-medium text-sm text-gray-500">{{ Auth::guard("seller")->user()->email }}</div>
-                @endif
+                @auth("seller")
+                    <div class="font-medium text-base text-gray-800">{{ auth("seller")->user()->name }}</div>
+                    <div class="font-medium text-sm text-gray-500">{{ auth("seller")->user()->email }}</div>
+                @endauth
             </div>
 
             <div class="mt-3 space-y-1">
                 <!-- Authentication -->
-                @if(Auth::guard("seller"))
+                @auth("seller")
                     <form method="POST" action="{{ route('seller.logout') }}">
                         @csrf
 
                         <x-responsive-nav-link :href="route('seller.logout')"
                                                onclick="event.preventDefault();
-                                        this.closest('form').submit();">
+                    this.closest('form').submit();">
                             {{ __('Log Out') }}
                         </x-responsive-nav-link>
                     </form>
-                @endif
+                @endauth
             </div>
         </div>
     </div>

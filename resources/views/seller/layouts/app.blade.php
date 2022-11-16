@@ -10,12 +10,6 @@
     <link href="https://static.neshan.org/sdk/leaflet/1.4.0/leaflet.css" rel="stylesheet" type="text/css">
     <script src="https://static.neshan.org/sdk/leaflet/1.4.0/leaflet.js" type="text/javascript"></script>
 
-    {{-- leaflet--}}
-    {{--    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css"--}}
-    {{--          integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin=""/>--}}
-    {{--    <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"--}}
-    {{--            integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=" crossorigin=""></script>--}}
-
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->

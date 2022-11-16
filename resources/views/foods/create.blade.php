@@ -16,7 +16,7 @@
             <div class="flex flex-col w-2/3 mx-auto gap-3 mx-36">
                 <div class="flex justify-between items-center">
                     <!-- Title -->
-                    <div class="py-3 ">
+                    <div class="py-3 w-2/5">
                         <label class="font-semibold text-gray-700 px-3" for="title">Title</label>
                         <input
                             class="w-full border-2 border-blue-200 rounded-lg hover:bg-blue-100 font-semibold "
@@ -24,25 +24,43 @@
                             value="{{old("title")}}" required autofocus>
                         @error("title") <span class="font-semibold text-lg text-blue-600">{{$message}}</span> @enderror
                     </div>
-                    <!-- Type -->
-                    <div class="py-3">
-                        <label class="font-semibold text-gray-700 px-3" for="type">Type</label>
-                        <select class="w-full border-2 border-blue-200 rounded-lg cursor-pointer font-semibold "
-                                name="type" id="type" required>
-                            <option selected>Choose...</option>
-                            @foreach($categories as $category)
-                                <option value="{{$category->title}}">{{ucfirst($category->title)}}</option>
-                            @endforeach
-                        </select>
-                    </div>
                     <!-- Price -->
-                    <div class="py-3">
+                    <div class="py-3 w-2/5">
                         <label class="font-semibold text-gray-700 px-3" for="price">Price</label>
                         <input
                             class="w-full border-2 border-blue-200 rounded-lg hover:bg-blue-100 font-semibold "
                             type="text" name="price" id="price"
                             value="{{old("price")}}" required>
                         @error("price") <span class="font-semibold text-lg text-blue-600">{{$message}}</span> @enderror
+                    </div>
+                </div>
+                <div class="flex justify-between items-center">
+                    <!-- Type -->
+                    <div class="py-3 w-2/5">
+                        <label class="font-semibold text-gray-700 px-3" for="type">Type</label>
+                        <select class="w-full border-2 border-blue-200 rounded-lg cursor-pointer font-semibold "
+                                name="food_category" id="type" required>
+                            <option selected>Choose...</option>
+                            @foreach($categories as $category)
+                                <option value="{{$category->id}}">{{ucfirst($category->title)}}</option>
+                            @endforeach
+                        </select>
+                        @error("food_category") <span
+                            class="font-semibold text-lg text-blue-600">{{$message}}</span> @enderror
+                    </div>
+
+                    <!-- Discount -->
+                    <div class="py-3 w-2/5">
+                        <label class="font-semibold text-gray-700 px-3" for="discount">Discount</label>
+                        <select class="w-full border-2 border-blue-200 rounded-lg cursor-pointer font-semibold "
+                                name="discount_id" id="discount">
+                            <option value="" selected>No Discount</option>
+                            @foreach($discounts as $discount)
+                                <option value="{{$discount->id}}">{{ucfirst($discount->title)}}</option>
+                            @endforeach
+                        </select>
+                        @error("discount_id") <span
+                            class="font-semibold text-lg text-blue-600">{{$message}}</span> @enderror
                     </div>
                 </div>
                 <!-- Raw Material -->
@@ -60,7 +78,8 @@
                     <label class="font-semibold text-gray-700 px-3" for="image">Food Image</label>
                     <input class="w-full cursor-pointer rounded-lg hover:bg-blue-100 font-semibold "
                            type="file" name="image_path" id="image" value="{{old("image_path")}}" required>
-                    @error("image_path") <span class="font-semibold text-lg text-red-600">{{$message}}</span> @enderror
+                    @error("image_path") <span
+                        class="font-semibold text-lg text-red-600">{{$message}}</span> @enderror
                 </div>
 
                 <div class="text-center">

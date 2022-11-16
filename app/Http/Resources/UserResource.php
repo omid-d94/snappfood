@@ -18,7 +18,6 @@ class UserResource extends JsonResource
             "name" => $this->name,
             "email" => $this->email,
             "password" => $request->password,
-            "Token" => $this->resource->createToken($this->name)->plainTextToken,
         ];
     }
 }
