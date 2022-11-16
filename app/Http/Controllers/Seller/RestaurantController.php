@@ -51,13 +51,7 @@ class RestaurantController extends Controller
 
         $validated["logo"] = Storage::disk('public')->put('images/restaurants', $request->file("logo"));
 
-        $validated["latitude"] = 123.123123;
-        $validated["longitude"] = 123.123123;
-
         $validated["seller_id"] = auth("seller")->user()->id;
-        $validated["type"] = RestaurantCategory::where("name", $request->type)->firstOrFail()->id;
-
-        $validated["status"] = true;
         $restaurant = Restaurant::create($validated);
         foreach ($request?->day as $day => $time) {
             WorkingTime::create([
@@ -123,7 +117,7 @@ class RestaurantController extends Controller
         }
         $validated["is_open"] = $request->input("is_open");
 
-        $validated["type"] = $restaurant->restaurantCategory->id;
+        $validated["food_category"] = $request->type;
         $validated['logo'] = $imagePath ?? $oldPath;
         $restaurant->update($validated);
 
@@ -146,31 +140,31 @@ class RestaurantController extends Controller
             ->with("success", "Congradulation!☺ {$restaurant->title} Has Been Deleted Successfully");
     }
 
-    public function showSetting()
-    {
-        $restaurant = Restaurant::all()->where("seller_id", Auth::guard('seller')->id())->firstOrFail();
-        $isOpen = $restaurant->is_open;
-        $workingTimes = $restaurant->workingTimes;
-        return view("restaurants.setting", compact("workingTimes", "isOpen"));
-    }
-
-    public function changeSetting(Request $request, Restaurant $restaurant)
-    {
-        Restaurant::create(
-            [
-                "is_open" => $request->input("is_open")
-            ]
-        );
-
-        foreach ($request->day as $day => $time) {
-            $working_times_id[] = WorkingTime::create([
-                'day' => $day,
-                'start' => $time[0],
-                'end' => $time[1],
-            ])->id;
-        }
-        $restaurant->workingTimes()->sync($working_times_id);
-        return redirect()->route("seller.restaurants.index")
-            ->with("success", "RESTAURANT SETTING HAS BEEN UPDATED!☺");
-    }
+//    public function showSetting()
+//    {
+//        $restaurant = Restaurant::all()->where("seller_id", Auth::guard('seller')->id())->firstOrFail();
+//        $isOpen = $restaurant->is_open;
+//        $workingTimes = $restaurant->workingTimes;
+//        return view("restaurants.setting", compact("workingTimes", "isOpen"));
+//    }
+//
+//    public function changeSetting(Request $request, Restaurant $restaurant)
+//    {
+//        Restaurant::create(
+//            [
+//                "is_open" => $request->input("is_open")
+//            ]
+//        );
+//
+//        foreach ($request->day as $day => $time) {
+//            $working_times_id[] = WorkingTime::create([
+//                'day' => $day,
+//                'start' => $time[0],
+//                'end' => $time[1],
+//            ])->id;
+//        }
+//        $restaurant->workingTimes()->sync($working_times_id);
+//        return redirect()->route("seller.restaurants.index")
+//            ->with("success", "RESTAURANT SETTING HAS BEEN UPDATED!☺");
+//    }
 }
