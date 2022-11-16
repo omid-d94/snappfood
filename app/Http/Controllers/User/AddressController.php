@@ -27,16 +27,6 @@ class AddressController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param \App\Http\Requests\User\AddressCreateRequest $request
@@ -46,7 +36,7 @@ class AddressController extends Controller
     {
         $validated = $request->validated();
         $address = Address::create($validated);
-        $address->users()->attach(auth("sanctum")->user()->id);
+        $address->users()->attach(auth()->user()->id);
         return response(["message" => "Address added successfully"], 201);
     }
 
@@ -63,17 +53,6 @@ class AddressController extends Controller
             return response(new AddressResource($address));
         return response(["message" => "Address Not Found!"], 404);
 
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Models\Address $address
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Address $address)
-    {
-        //
     }
 
     /**
@@ -97,12 +76,13 @@ class AddressController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Address $address
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Address $address)
+    public function destroy(int $id)
     {
-        if ($address->exists && auth()->user()->addresses->contains($address)) {
+        $address = Address::where("id", $id)->first();
+        if ($address?->exists && auth()->user()->addresses->contains($address)) {
             $address->delete();
             return response(["message" => "Address deleted successfully"]);
         }
@@ -112,7 +92,7 @@ class AddressController extends Controller
 
     public function setDefaultAddress(Address $address)
     {
-        $addresses = auth("sanctum")->user()->addresses;
+        $addresses = auth()->user()->addresses;
         if ($addresses->contains($address)) {
             collect($addresses)->map(function ($userAddress) {
                 return $userAddress->update(["default" => false]);
