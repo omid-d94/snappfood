@@ -18,11 +18,11 @@ class FoodCategoryCollection extends ResourceCollection
     {
         return [
             "categories" => collect($this->collection)
-                ->map(function ($food) {
+                ->map(function ($foodCategory) {
                     return [
-                        "id" => $food->foodCategory->id,
-                        "title" => $food->foodCategory->title,
-                        "foods" => new FoodResource($food),
+                        "id" => $foodCategory->id,
+                        "title" => $foodCategory->title,
+                        "foods" => FoodResource::collection($foodCategory->foods),
                     ];
                 })
         ];
