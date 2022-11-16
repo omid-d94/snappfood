@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Seller\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Seller\Auth\LoginRequest as Request;
+use App\Http\Requests\Seller\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
-//use Illuminate\Http\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthenticatedSessionController extends Controller
@@ -26,7 +26,7 @@ class AuthenticatedSessionController extends Controller
      * @param \App\Http\Requests\Seller\Auth\LoginRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(LoginRequest $request)
     {
         $request->authenticate();
 
