@@ -52,4 +52,10 @@ class User extends Authenticatable
             relatedPivotKey: "address_id"
         );
     }
+
+    /* Relationship between user and cart is one to many */
+    public function carts()
+    {
+        return $this->hasMany(Cart::class, "user_id");
+    }
 }
