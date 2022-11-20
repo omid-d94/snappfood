@@ -18,7 +18,7 @@ class Food extends Model
      */
     public function restaurant()
     {
-        return $this->belongsTo(Restaurant::class,"restaurant_id");
+        return $this->belongsTo(Restaurant::class, "restaurant_id");
     }
 
     /**
@@ -27,7 +27,7 @@ class Food extends Model
      */
     public function foodCategory()
     {
-        return $this->belongsTo(FoodCategory::class,"food_category");
+        return $this->belongsTo(FoodCategory::class, "food_category");
     }
 
     /**
@@ -41,7 +41,7 @@ class Food extends Model
             "cart_food",
             "food_id",
             "cart_id"
-        );
+        )->withPivot("count");
     }
 
     /**

@@ -19,7 +19,7 @@ class Cart extends Model
             "cart_food",
             "cart_id",
             "food_id"
-        );
+        )->withPivot("count");
     }
 
     public function order()
