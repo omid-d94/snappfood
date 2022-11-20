@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\User\RestaurantController;
 use App\Http\Controllers\User\AddressController;
 use App\Http\Controllers\User\AuthenticationUserController;
@@ -58,4 +59,6 @@ Route::middleware("auth:sanctum")->group(function () {
     /* Foods of Restaurant Routes */
     Route::get("/restaurants/{restaurant}/foods", [RestaurantController::class, "getFoods"]);
 
+    Route::get("/carts", [CartController::class, "getCart"]);
+    Route::post("/carts/add", [CartController::class, "addToCart"]);
 });
