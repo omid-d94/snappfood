@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\CartFood;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class CartCollection extends ResourceCollection
@@ -22,7 +23,17 @@ class CartCollection extends ResourceCollection
                         "title" => $cart->resource->restaurant->title,
                         "image" => $cart->resource->restaurant->logo,
                     ],
-                    "foods" => CartFoodResource::collection($cart->foods, $cart->id),
+                    "foods" => collect($cart->foods)->map(function ($food) use ($cart) {
+                        return [
+                            "id" => $food->id,
+                            "title" => $food->title,
+                            "count" => CartFood::select("count")
+                                ->where("food_id", $food->id)
+                                ->where("cart_id", $cart->id)
+                                ->first()?->count,
+                            "price" => $food->price,
+                        ];
+                    }),
                     "create_at" => $cart->created_at,
                     "updated_at" => $cart->updated_at
                 ];
@@ -30,3 +41,6 @@ class CartCollection extends ResourceCollection
         ];
     }
 }
+
+
+//CartFoodResource::collection($cart->foods,$cart->id),
