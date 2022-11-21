@@ -25,15 +25,26 @@ class CartResource extends JsonResource
     {
         return [
             "carts" => [
-                "id" => $this->id,
+                "id" => $this->resource->id,
                 "restaurant" => [
                     "title" => $this->resource->restaurant->title,
                     "image" => $this->resource->restaurant->logo,
                 ],
-                "foods" => CartFoodResource::collection($this->foods, $this->id),
-                "create_at" => $this->created_at,
-                "updated_at" => $this->updated_at,
+                "foods" => collect($this->resource->foods)->map(function ($food) {
+                    return [
+                        "id" => $food->id,
+                        "title" => $food->title,
+                        "count" => CartFood::select("count")
+                            ->where("food_id", $food->id)
+                            ->where("cart_id", $this->resource->id)
+                            ->first()?->count,
+                        "price" => $food->price,
+                    ];
+                }),
+                "create_at" => $this->resource->created_at,
+                "updated_at" => $this->resource->updated_at,
             ],
         ];
     }
 }
+//CartFoodResource::collection($this->foods, $this->id),
