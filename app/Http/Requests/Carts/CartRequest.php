@@ -4,6 +4,7 @@ namespace App\Http\Requests\Carts;
 
 use App\Models\Cart;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class CartRequest extends FormRequest
 {
@@ -15,7 +16,7 @@ class CartRequest extends FormRequest
     public function authorize(): bool
     {
         if ($this->input("cart_id")) {
-            return auth()->user()->id === Cart::find($this->input("cart_id"))?->user_id;
+            return Gate::allows("owner-cart", $this->input("cart_id"));
         }
         return true;
     }
@@ -38,7 +39,7 @@ class CartRequest extends FormRequest
     {
         return [
             "food_id.exists" => "The food is not acceptable",
-            "cart_id" => "The cart is not acceptable",
+            "cart_id.exists" => "The cart is not acceptable",
         ];
     }
 
