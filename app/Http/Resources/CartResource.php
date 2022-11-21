@@ -47,4 +47,3 @@ class CartResource extends JsonResource
         ];
     }
 }
-//CartFoodResource::collection($this->foods, $this->id),
