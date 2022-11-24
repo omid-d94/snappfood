@@ -15,8 +15,10 @@ class CartRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if ($this->input("cart_id")) {
-            return Gate::allows("owner-cart", $this->input("cart_id"));
+        $cart_id = $this->input("cart_id");
+        $cart = Cart::find($cart_id);
+        if ($cart) {
+            return auth()->user()->id === $cart->user_id;
         }
         return true;
     }

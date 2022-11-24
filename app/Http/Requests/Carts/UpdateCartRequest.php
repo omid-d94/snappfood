@@ -15,7 +15,11 @@ class UpdateCartRequest extends FormRequest
      */
     public function authorize()
     {
-        return Gate::allows("owner-cart", $this->route("cart"));
+        $cart = Cart::find($this->route("cart"));
+        if ($cart) {
+            return auth()->user()->id === $cart->user_id;
+        }
+        return false;
     }
 
     /**
