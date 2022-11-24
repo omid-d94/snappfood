@@ -69,4 +69,6 @@ Route::middleware("auth:sanctum")->group(function () {
         ->whereNumber("cart");
     Route::delete("/carts/delete/{cart}", [CartController::class, "deleteCart"])
         ->whereNumber("cart");
+    Route::delete("/carts/{cart}/food/{food}", [CartController::class, "deleteFood"])
+        ->whereNumber(["cart", "food"]);
 });
