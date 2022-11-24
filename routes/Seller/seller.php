@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\Seller\FoodController;
+use App\Http\Controllers\Seller\OrderController;
 use App\Http\Controllers\Seller\RestaurantController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,5 +20,18 @@ Route::prefix("seller")->middleware(["seller"])->group(function () {
 
     Route::post("/restaurants/{restaurant}", [RestaurantController::class, "changeSetting"])
         ->name("seller.restaurants.changeSetting");
+
+    /* Seller Dashboard */
+    Route::get('/dashboard', [OrderController::class, "getOrders"])
+        ->name('seller.dashboard');
+    /* Get archived orders */
+    Route::get("/orders/archived", [OrderController::class, "getArchivedOrders"])
+        ->name("seller.orders.archived");
+    /* show order details */
+    Route::get("/orders/{order}", [OrderController::class, "showOrder"])
+        ->name("seller.orders.show")->whereNumber("order");
+
+    Route::patch("/orders/{order}", [OrderController::class, "updateStatus"])
+        ->name("seller.orders.update.status")->whereNumber("order");
 
 });
