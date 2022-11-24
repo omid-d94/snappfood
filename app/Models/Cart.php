@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Cart extends Model
 {
@@ -13,6 +14,11 @@ class Cart extends Model
     protected $table = "carts";
     protected $fillable = ["user_id", "restaurant_id"];
 
+    /**
+     * Relationship between cart and food is many to many
+     * and with count field in pivot table
+     * @return BelongsToMany
+     */
     public function foods()
     {
         return $this->belongsToMany(
@@ -63,7 +69,8 @@ class Cart extends Model
     {
         $total = 0;
         foreach (CartFood::where("cart_id", $cart->id)->get() as $item) {
-            $total += Food::find($item->food_id)->price * $item->count;
+            $food = Food::find($item->food_id);
+            $total += $food->price * $item->count * ($food->discount?->factor ?? 1);
         }
         return $total;
     }
