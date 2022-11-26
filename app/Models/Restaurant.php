@@ -60,6 +60,12 @@ class Restaurant extends Model
         return $this->hasMany(WorkingTime::class, "restaurant_id");
     }
 
+    /* Relationship between restaurant and cart is one to many */
+    public function carts()
+    {
+        return $this->hasMany(Cart::class, "restaurant_id");
+    }
+
     /**
      * Relationship between seller and restaurant is one to many
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

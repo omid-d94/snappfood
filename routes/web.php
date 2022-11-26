@@ -24,12 +24,6 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-/**
- * Seller Dashboard
- */
-Route::get('/seller/dashboard', function () {
-    return view('seller.dashboard');
-})->middleware(['seller'])->name('seller.dashboard');
 
 /**
  * Admin Dashboard
@@ -57,4 +51,6 @@ require __DIR__ . '/Admin/admin.php';
 require __DIR__ . '/Seller/seller.php';
 require __DIR__ . '/Seller/auth.php';
 
-
+Route::get("/mail", function () {
+    return view("mails.users.successPayment");
+});
