@@ -39,13 +39,13 @@ Route::prefix("seller")->middleware(["seller"])->group(function () {
     Route::get("/comments", [CommentController::class, "index"])
         ->name("seller.comments.index");
     // Confirm comment
-    Route::patch("/comments/{comment}", [CommentController::class, "confirmComment"])
+    Route::patch("/comments/{comment}/confirm", [CommentController::class, "confirmComment"])
         ->name("seller.comments.confirm");
     // Reject comment
-    Route::put("/comments/{comment}", [CommentController::class, "rejectComment"])
+    Route::patch("/comments/{comment}/reject", [CommentController::class, "rejectComment"])
         ->name("seller.comments.reject");
     // Delete request
-    Route::delete("/comments/{comment}", [CommentController::class, "deleteRequest"])
+    Route::patch("/comments/{comment}/delete", [CommentController::class, "deleteRequest"])
         ->name("seller.comments.delete.request");
     // Replying to comment
     Route::get("/comments/{comment}", [CommentController::class, "ReplyingToComment"])
