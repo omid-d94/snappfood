@@ -21,17 +21,23 @@
                         </x-nav-link>
                     @endauth
                     @if(!empty(auth("seller")->user()->restaurants->toArray()))
-                    <!-- Restaurant Category -->
+                    <!-- Restaurant Info -->
                         <x-nav-link :href="route('seller.restaurants.index')"
                                     :active="request()->routeIs('seller.restaurants.index')">
                             {{ __('Restaurants') }}
                         </x-nav-link>
-                        <!-- Restaurant Setting -->
 
+                        <!-- Foods -->
                         <x-nav-link :href="route('seller.foods.index')"
                                     :active="request()->routeIs('seller.foods.index')">
                             {{ __('Foods') }}
                         </x-nav-link>
+                        <!-- Comments -->
+                        <x-nav-link :href="route('seller.comments.index')"
+                                    :active="request()->routeIs('seller.comments.index')">
+                            {{ __('Comments') }}
+                        </x-nav-link>
+
                     @endif
                 </div>
             </div>
