@@ -50,12 +50,13 @@ class CommentController extends Controller
      */
     public function getFoodComments(GetCommentRequest $request)
     {
-        $comments = Comment::whereHas("order",
-            function ($query) use ($request) {
+        $comments = Comment::where("is_confirmed", Comment::CONFIRMED)
+            ->whereHas("order",
+                function ($query) use ($request) {
+                    return $this->getOrder($request, $query);
+                })->with("order", function ($query) use ($request) {
                 return $this->getOrder($request, $query);
-            })->with("order", function ($query) use ($request) {
-            return $this->getOrder($request, $query);
-        })->get();
+            })->get();
         return empty($comments)
             ? response(["message" => "There is no comments"], Response::HTTP_NOT_FOUND)
             : response(CommentResource::collection($comments), Response::HTTP_OK);
