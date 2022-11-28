@@ -35,6 +35,12 @@
                                     :active="request()->routeIs('discounts.index')">
                             {{ __('Discounts') }}
                         </x-nav-link>
+
+                        <!-- Comments -->
+                        <x-nav-link :href="route('admin.comments.index')"
+                                    :active="request()->routeIs('admin.comments.index')">
+                            {{ __('Comments') }}
+                        </x-nav-link>
                     @endauth
                 </div>
             </div>
