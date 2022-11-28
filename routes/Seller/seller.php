@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\Seller\CommentController;
 use App\Http\Controllers\Seller\FoodController;
 use App\Http\Controllers\Seller\OrderController;
 use App\Http\Controllers\Seller\RestaurantController;
@@ -34,4 +35,22 @@ Route::prefix("seller")->middleware(["seller"])->group(function () {
     Route::patch("/orders/{order}", [OrderController::class, "updateStatus"])
         ->name("seller.orders.update.status")->whereNumber("order");
 
+    /* comment routes */
+    Route::get("/comments", [CommentController::class, "index"])
+        ->name("seller.comments.index");
+    // Confirm comment
+    Route::patch("/comments/{comment}", [CommentController::class, "confirmComment"])
+        ->name("seller.comments.confirm");
+    // Reject comment
+    Route::put("/comments/{comment}", [CommentController::class, "rejectComment"])
+        ->name("seller.comments.reject");
+    // Delete request
+    Route::delete("/comments/{comment}", [CommentController::class, "deleteRequest"])
+        ->name("seller.comments.delete.request");
+    // Replying to comment
+    Route::get("/comments/{comment}", [CommentController::class, "ReplyingToComment"])
+        ->name("seller.comments.reply");
+    // Sending Reply to comment
+    Route::PATCH("/comments/{comment}/answer", [CommentController::class, "SendingReply"])
+        ->name("seller.comments.sending.reply");
 });
