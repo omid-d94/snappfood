@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Seller\OrderController;
 use App\Http\Controllers\User\AddressController;
 use App\Http\Controllers\User\AuthenticationUserController;
 use App\Http\Controllers\User\CartController;
+use App\Http\Controllers\User\CommentController;
 use App\Http\Controllers\User\RestaurantController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -71,4 +73,11 @@ Route::middleware("auth:sanctum")->group(function () {
         ->whereNumber("cart");
     Route::delete("/carts/{cart}/food/{food}", [CartController::class, "deleteFood"])
         ->whereNumber(["cart", "food"]);
+    /* Order Tracking by user */
+    Route::get("/orders/{order}", [OrderController::class, "orderTracking"])
+        ->whereNumber("order");
+    /* make a comment on order by user */
+    Route::post("/comments", [CommentController::class, "makeComment"]);
+    /* Get comments group by restaurant or food */
+    Route::get("/comments", [CommentController::class, "getFoodComments"]);
 });
