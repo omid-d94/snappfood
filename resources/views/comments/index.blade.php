@@ -67,7 +67,7 @@
                                 action="{{route("seller.comments.reject", parameters:["comment"=>$comment->id])}}"
                                 method="POST">
                                 @csrf
-                                @method("PUT")
+                                @method("PATCH")
                                 <button class="bg-purple-900 text-white px-2 py-4 h-full w-full font-bold hover:bg-purple-700
                                 hover:text-purple-50"
                                         type="submit">Reject
@@ -78,7 +78,7 @@
                                 parameters:["comment"=>$comment->id])}}"
                                 method="POST">
                                 @csrf
-                                @method("DELETE")
+                                @method("PATCH")
                                 <button class="bg-yellow-900 text-white px-2 py-4 h-full w-full font-bold
                                 hover:bg-yellow-700
                                 hover:text-yellow-50"
