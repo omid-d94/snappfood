@@ -65,7 +65,8 @@ class Order extends Model
      */
     public function comment()
     {
-        return $this->hasOne(Comment::class, "order_id");
+        return $this->hasOne(Comment::class, "order_id")
+            ->whereNull("comments.deleted_at");
     }
 
     /**
