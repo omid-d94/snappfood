@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Seller;
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use App\Models\Order;
+use App\Models\Restaurant;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -23,10 +24,7 @@ class CommentController extends Controller
      */
     public function index()
     {
-        $restaurant = auth("seller")->user()->restaurants->first()->id;
-        $orders = Order::select("id")->where("restaurant_id", $restaurant)
-            ->withTrashed()->get();
-        $comments = Comment::whereIn("order_id", $orders)
+        $comments = Comment::whereIn("order_id", $this->getOrders($this->getRestaurant()))
             ->paginate($perPage = 10, $columns = ["*"], $pageName = "comments");
 
         return view("comments.index", compact("comments"));
@@ -44,7 +42,7 @@ class CommentController extends Controller
         try {
 
             $result = $comment->update(["is_confirmed" => Comment::CONFIRMED]);
-
+            $this->ScoreUpdating();
             return $result
                 ? redirect(status: Response::HTTP_OK)->route("seller.comments.index")
                     ->with(["success" => "The comment has been confirmed successfully"])
@@ -141,5 +139,45 @@ class CommentController extends Controller
             throw new Exception(message: $e->getMessage());
         }
 
+    }
+
+    /**
+     * Updating restaurant score after confirm a comment
+     *
+     * @return void
+     */
+    public function ScoreUpdating(): void
+    {
+        $comments = Comment::whereIn("order_id", $this->getOrders($this->getRestaurant()))
+            ->where("is_confirmed", Comment::CONFIRMED)
+            ->get(["score"]);
+        $newScore = 0;
+        foreach ($comments as $comment) {
+            $newScore += $comment->score;
+        }
+        $newScore /= count($comments);
+        $this->getRestaurant()->update(["score" => $newScore]);
+    }
+
+    /**
+     * Get restaurant model related to seller
+     *
+     * @return Restaurant
+     */
+    public function getRestaurant(): Restaurant
+    {
+        return auth("seller")->user()->restaurants->first();
+    }
+
+    /**
+     * Get orders related to restaurant
+     *
+     * @param Restaurant $restaurant
+     * @return mixed
+     */
+    public function getOrders(Restaurant $restaurant): mixed
+    {
+        return Order::select("id")->where("restaurant_id", $restaurant->id)
+            ->withTrashed()->get();
     }
 }
