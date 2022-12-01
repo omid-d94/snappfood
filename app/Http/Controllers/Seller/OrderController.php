@@ -41,11 +41,16 @@ class OrderController extends Controller
      */
     public function getArchivedOrders()
     {
-        $restaurant = auth("seller")->user()->restaurants->first();
-        $orders = Order::where("restaurant_id", $restaurant->id)
-            ->where("status", Order::DELIVERED)->withTrashed()
+        $orders = $this->getDeliveredOrders()
             ->paginate($perPage = 10, $columns = ["*"], $pageName = "order-page");
         return view("seller.dashboard", compact("orders"));
+    }
+
+    public function getDeliveredOrders()
+    {
+        $restaurant = auth("seller")->user()->restaurants->first();
+        return Order::where("restaurant_id", $restaurant->id)
+            ->where("status", Order::DELIVERED)->withTrashed();
     }
 
     /**
