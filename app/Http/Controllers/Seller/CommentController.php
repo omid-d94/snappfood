@@ -25,6 +25,7 @@ class CommentController extends Controller
     public function index()
     {
         $comments = Comment::whereIn("order_id", $this->getOrders($this->getRestaurant()))
+            ->orderBy("created_at","desc")
             ->paginate($perPage = 10, $columns = ["*"], $pageName = "comments");
 
         return view("comments.index", compact("comments"));
