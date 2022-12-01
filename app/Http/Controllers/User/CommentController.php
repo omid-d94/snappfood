@@ -56,7 +56,7 @@ class CommentController extends Controller
                     return $this->getOrder($request, $query);
                 })->with("order", function ($query) use ($request) {
                 return $this->getOrder($request, $query);
-            })->get();
+            })->orderBy("created_at", "desc")->get();
         return empty($comments)
             ? response(["message" => "There is no comments"], Response::HTTP_NOT_FOUND)
             : response(CommentResource::collection($comments), Response::HTTP_OK);
