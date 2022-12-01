@@ -32,10 +32,17 @@
                                     :active="request()->routeIs('seller.foods.index')">
                             {{ __('Foods') }}
                         </x-nav-link>
+
                         <!-- Comments -->
                         <x-nav-link :href="route('seller.comments.index')"
                                     :active="request()->routeIs('seller.comments.index')">
                             {{ __('Comments') }}
+                        </x-nav-link>
+
+                        <!-- reports -->
+                        <x-nav-link :href="route('seller.reports.index')"
+                                    :active="request()->routeIs('seller.reports.index')">
+                            {{ __('reports') }}
                         </x-nav-link>
 
                     @endif
