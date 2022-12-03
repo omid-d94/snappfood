@@ -11,10 +11,12 @@ use App\Models\Order;
 use App\Models\User;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
 class OrderController extends Controller
@@ -39,11 +41,16 @@ class OrderController extends Controller
      */
     public function getArchivedOrders()
     {
-        $restaurant = auth("seller")->user()->restaurants->first();
-        $orders = Order::where("restaurant_id", $restaurant->id)
-            ->where("status", Order::DELIVERED)->withTrashed()
+        $orders = $this->getDeliveredOrders()
             ->paginate($perPage = 10, $columns = ["*"], $pageName = "order-page");
         return view("seller.dashboard", compact("orders"));
+    }
+
+    public function getDeliveredOrders()
+    {
+        $restaurant = auth("seller")->user()->restaurants->first();
+        return Order::where("restaurant_id", $restaurant->id)
+            ->where("status", Order::DELIVERED)->withTrashed();
     }
 
     /**
@@ -135,5 +142,25 @@ class OrderController extends Controller
     public function destroy(Order $order)
     {
         $order->delete();
+    }
+
+    /**
+     * Checks Order Status
+     *
+     * @param int $order_id
+     * @return Application|ResponseFactory|\Illuminate\Http\Response
+     */
+    public function orderTracking(int $order_id)
+    {
+        $order = Order::where("id", $order_id)
+            ->withTrashed()
+            ->first();
+        if (!is_null($order)) {
+            Gate::authorize("owner-order", $order);
+            return response(
+                ["message" => "your order status => {$order->status}"],
+                Response::HTTP_OK);
+        }
+        return response(["message" => "ORDER NOT FOUND!"], Response::HTTP_NOT_FOUND);
     }
 }

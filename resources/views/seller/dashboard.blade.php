@@ -49,7 +49,7 @@
                             <th class="p-2 px-5 font-bold border-r-2 border-white">Tracking Code</th>
                             <th class="p-2 px-5 font-bold border-r-2 border-white">Request Time</th>
                             <th class="p-2 px-5 font-bold border-r-2 border-white">Status</th>
-                            <th class="p-2 px-5 font-bold border-r-2 border-white">Details</th>
+                            <th class="p-2 px-5 font-bold">Details</th>
                         </tr>
                         </thead>
                         <tbody>

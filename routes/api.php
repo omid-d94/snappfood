@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\Seller\OrderController;
 use App\Http\Controllers\User\AddressController;
 use App\Http\Controllers\User\AuthenticationUserController;
 use App\Http\Controllers\User\CartController;
+use App\Http\Controllers\User\CommentController;
+use App\Http\Controllers\User\NearestRestaurantController;
 use App\Http\Controllers\User\RestaurantController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -49,6 +52,8 @@ Route::middleware("auth:sanctum")->group(function () {
     /* Addresses Routes */
     Route::resource("addresses", AddressController::class);
     Route::post("/addresses/{address}", [AddressController::class, "setDefaultAddress"]);
+    Route::get("/addresses/get/default", [AddressController::class, "getDefaultAddress"])
+        ->name("user.addresses.get.default");
     Route::put("/addresses/{address}", [AddressController::class, "update"]);
     Route::delete("/addresses/{address}", [AddressController::class, "destroy"]);
 
@@ -58,6 +63,11 @@ Route::middleware("auth:sanctum")->group(function () {
 
     /* Foods of Restaurant Routes */
     Route::get("/restaurants/{restaurant}/foods", [RestaurantController::class, "getFoods"]);
+
+    /* Find the nearest restaurant */
+    Route::get("/restaurants/nearest-within-radius/{radius}", [NearestRestaurantController::class, "findNearestRestaurants"])
+        ->whereNumber("radius")
+        ->name("user.restaurants.find.nearest");
 
     /* Food Cart Routes */
     Route::get("/carts", [CartController::class, "getCart"]);
@@ -71,4 +81,11 @@ Route::middleware("auth:sanctum")->group(function () {
         ->whereNumber("cart");
     Route::delete("/carts/{cart}/food/{food}", [CartController::class, "deleteFood"])
         ->whereNumber(["cart", "food"]);
+    /* Order Tracking by user */
+    Route::get("/orders/{order}", [OrderController::class, "orderTracking"])
+        ->whereNumber("order");
+    /* make a comment on order by user */
+    Route::post("/comments", [CommentController::class, "makeComment"]);
+    /* Get comments group by restaurant or food */
+    Route::get("/comments", [CommentController::class, "getFoodComments"]);
 });

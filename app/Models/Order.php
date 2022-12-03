@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Order extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $table = "orders";
     protected $fillable = ["status", "total", "user_id", "restaurant_id", "tracking_code"];
@@ -57,6 +57,16 @@ class Order extends Model
     public function user()
     {
         return $this->belongsTo(User::class, "user_id");
+    }
+
+    /**
+     * Relationship between order and comment is one to one
+     * @return HasOne
+     */
+    public function comment()
+    {
+        return $this->hasOne(Comment::class, "order_id")
+            ->whereNull("comments.deleted_at");
     }
 
     /**

@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Restaurant extends Model
 {
@@ -21,7 +24,7 @@ class Restaurant extends Model
 
     /**
      * Relationship between Category and restaurant is one to many
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function restaurantCategory()
     {
@@ -44,7 +47,7 @@ class Restaurant extends Model
 
     /**
      * Relationship between restaurant and food  is One to many
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function foods()
     {
@@ -53,28 +56,58 @@ class Restaurant extends Model
 
     /**
      * Relationship between restaurant and working time is one to many
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function workingTimes()
     {
         return $this->hasMany(WorkingTime::class, "restaurant_id");
     }
 
-    /* Relationship between restaurant and cart is one to many */
+    /**
+     * Relationship between restaurant and cart is one to many
+     * @return HasMany
+     */
     public function carts()
     {
         return $this->hasMany(Cart::class, "restaurant_id");
     }
 
     /**
+     * Relationship between restaurant and order is one to many
+     * @return HasMany
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class, "restaurant_id");
+    }
+
+    /**
+     * Relationship between restaurant and comment is has many through
+     * @return HasManyThrough
+     */
+    public function comments()
+    {
+        return $this->hasManyThrough(
+            Comment::class,
+            Order::class,
+            "restaurant_id",
+            "order_id"
+        );
+    }
+
+    /**
      * Relationship between seller and restaurant is one to many
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function seller()
     {
         return $this->belongsTo(Seller::class, "seller_id");
     }
 
+    /**
+     * Displaying send cost equal to zero as free
+     * @return Attribute
+     */
     public function sendCost(): Attribute
     {
         return Attribute::make(

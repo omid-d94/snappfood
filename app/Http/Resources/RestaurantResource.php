@@ -26,8 +26,18 @@ class RestaurantResource extends JsonResource
             "is_open" => $this->is_open,
             "score" => $this->score,
             "image" => $this->logo,
-            "comment_count" => "THERE ARE NO COMMENTS!",
+            "comment_count" => $this->resource->comments()->count(),
             "schedule" => new WorkingTimesCollection($this->resource->workingTimes),
         ];
+    }
+
+    public function getCommentCount($query)
+    {
+        return $query->withTrashed()
+            ->with("comment", function ($query) {
+                return $query->count();
+            })->whereHas("comment", function ($query) {
+                return $query->count();
+            });
     }
 }

@@ -55,7 +55,7 @@ class Food extends Model
             "food_order",
             "food_id",
             "order_id"
-        );
+        )->withPivot("count");
     }
 
     /**
