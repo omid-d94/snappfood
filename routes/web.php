@@ -37,7 +37,6 @@ Route::get('/admin/dashboard', function () {
  * Routes Access By Customer
  */
 require __DIR__ . '/User/auth.php';
-require __DIR__ . '/User/user.php';
 
 /**
  * Routes Access By Admin
@@ -51,6 +50,3 @@ require __DIR__ . '/Admin/admin.php';
 require __DIR__ . '/Seller/seller.php';
 require __DIR__ . '/Seller/auth.php';
 
-Route::get("/mail", function () {
-    return view("mails.users.successPayment");
-});
