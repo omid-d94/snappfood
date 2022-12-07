@@ -6,46 +6,48 @@ use App\Exports\ReportExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Seller\FilterChartRequest;
 use App\Models\Order;
+use App\Traits\Seller\FilteringReports;
+use App\Traits\Seller\Reports;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class ReportController extends Controller
 {
+    use FilteringReports, Reports;
+
     /**
      * display all orders on chart group by month
      * @return Application|Factory|View
      */
-    public function index()
+    public function index(): View|Factory|Application
     {
         $orders = $this->getAllOrders();
+        session()->put(
+            [
+                "orders" => $orders,
+                "from" => $orders->first()->created_at,
+                "to" => now()->format("Y-m-d")
+            ]);
         $count = $orders->count();
         $totalIncome = $this->getTotalIncome($orders)["total"];
         $countChart = $this->countAllOrders();
+        $incomeChart = $this->incomeAllOrders();
+        $incomeLabel = $incomeChart->keys();
+        $incomeData = $incomeChart->values();
         $countLabel = $countChart->keys();
         $countData = $countChart->values();
         return view("reports.index",
-            compact("count", "totalIncome", "orders", "countLabel", "countData"));
-    }
-
-
-    /**
-     * Get count of orders group by month
-     * @return mixed
-     */
-    public function countAllOrders()
-    {
-        return Order::select([DB::raw("COUNT(*) as count"), DB::raw("MONTHNAME(created_at) as month_name")])
-            ->where('status', Order::DELIVERED)
-            ->where('restaurant_id', auth('seller')->user()->restaurants->first()->id)
-            ->whereYear('created_at', now()->year)->withTrashed()
-            ->groupBy(DB::raw("MONTHNAME(created_at)"))
-            ->pluck('count', 'month_name');
+            compact("count", "totalIncome", "orders", "countLabel", "countData", "incomeLabel", "incomeData"));
     }
 
     /**
@@ -54,58 +56,81 @@ class ReportController extends Controller
      * @param FilterChartRequest $request
      * @return Application|Factory|View
      */
-    public function filterDates(FilterChartRequest $request)
+    public function filterDates(FilterChartRequest $request): View|Factory|Application
     {
-        $validated = $request->validated();
+        $request->validated();
         $orders = (new OrderController())
             ->getDeliveredOrders()
-            ->whereBetween("created_at", [$request->from, $request->to])
+            ->betweenTwoDates($request->from, $request->to)
             ->get();
+        session()->put(
+            [
+                "orders" => $orders,
+                "from" => $request->from,
+                "to" => $request->to
+            ]);
         $count = $orders->count();
         $totalIncome = $this->getTotalIncome($orders)["total"];
+        $incomeOrders = $this->incomeFilterBetweenDates($request->from, $request->to);
         $countOrders = $this->countFilterOrders($request->from, $request->to);
+        $countData = $countOrders->values();
+        $countLabel = $countOrders->keys();
+        $incomeData = $incomeOrders->values();
+        $incomeLabel = $incomeOrders->keys();
+        return view("reports.index",
+            compact("count", "totalIncome", "orders",
+                "countLabel", "countData", "incomeLabel", "incomeData"));
+    }
+
+    /**
+     * get chart information when filtered by week
+     *
+     * @return Application|Factory|View
+     */
+    public function filterWeek(): View|Factory|Application
+    {
+        $orders = (new OrderController())->getDeliveredOrders()->filterByWeek()->get();
+        session()->put(
+            [
+                "orders" => $orders,
+                "from" => now()->subWeek()->format("Y-m-d"),
+                "to" => now()->format("Y-m-d")
+            ]);
+        $count = $orders->count();
+        $totalIncome = $this->getTotalIncome($orders)["total"];
+        $countOrders = $this->countFilterByWeek();
+        $incomeOrders = $this->incomeFilterByWeek();
         $countLabel = $countOrders->keys();
         $countData = $countOrders->values();
-        return view("reports.index", compact("count", "totalIncome", "countLabel", "countData", "orders"));
+        $incomeLabel = $incomeOrders->keys();
+        $incomeData = $incomeOrders->values();
+        return view("reports.index",
+            compact("count", "totalIncome", "countLabel", "countData", "incomeLabel", "incomeData", "orders"));
     }
 
     /**
-     * filter orders between two dates
-     * @param $from
-     * @param $to
-     * @return mixed
+     * get chart information when filtered by month
+     *
+     * @return Application|Factory|View
      */
-    public function countFilterOrders($from, $to)
+    public function filterMonth(): View|Factory|Application
     {
-        return (new OrderController())
-            ->getDeliveredOrders()
-            ->select([DB::raw("SUM(total) as total"), DB::raw("Date(created_at) as date")])
-            ->whereBetween('created_at', [$from, $to])->withTrashed()
-            ->groupBy(DB::raw("Date(created_at)"))
-            ->pluck('total', 'date');
-    }
-
-    /**
-     * Get all orders of restaurant
-     * @return mixed
-     */
-    public function getAllOrders()
-    {
-        return (new OrderController())->getDeliveredOrders()->get();
-    }
-
-    /**
-     * Get Total Income of restaurant
-     * @param Collection $orders
-     * @return array
-     */
-    private function getTotalIncome(Collection $orders)
-    {
-        $total = 0;
-        collect($orders)->map(function ($order) use (&$total) {
-            $total += $order->getAttributes()['total'];
-        });
-        return ["total" => number_format($total)];
+        $orders = (new OrderController())->getDeliveredOrders()->filterByMonth()->get();
+        session()->put([
+            "orders" => $orders,
+            "from" => now()->subMonth()->format("Y-m-d"),
+            "to" => now()->format("Y-m-d")
+        ]);
+        $count = $orders->count();
+        $totalIncome = $this->getTotalIncome($orders)["total"];
+        $countOrders = $this->countFilterByMonth();
+        $incomeOrders = $this->incomeFilterByMonth();
+        $countLabel = $countOrders->keys();
+        $countData = $countOrders->values();
+        $incomeLabel = $incomeOrders->keys();
+        $incomeData = $incomeOrders->values();
+        return view("reports.index",
+            compact("count", "totalIncome", "countLabel", "countData", "incomeLabel", "incomeData", "orders"));
     }
 
 
@@ -113,10 +138,13 @@ class ReportController extends Controller
      * export a report as excel file
      * @return BinaryFileResponse
      */
-    public function exportExcel()
+    public function exportExcel(): BinaryFileResponse
     {
+        $orders = session()->get("orders");
+        $from = session()->get("from");
+        $to = session()->get("to");
         return Excel::download(
-            export: new ReportExport(),
+            export: new ReportExport($orders, $from, $to),
             fileName: date("Ymd_His", time()) . "_report.xlsx"
         );
     }
@@ -125,10 +153,13 @@ class ReportController extends Controller
      * export a report as csv file
      * @return BinaryFileResponse
      */
-    public function exportCSV()
+    public function exportCSV(): BinaryFileResponse
     {
+        $orders = session()->get("orders");
+        $from = session()->get("from");
+        $to = session()->get("to");
         return Excel::download(
-            export: new ReportExport(),
+            export: new ReportExport($orders, $from, $to),
             fileName: date("Ymd_His", time()) . "_report.csv"
         );
     }
@@ -137,12 +168,23 @@ class ReportController extends Controller
      * export a report as pdf file
      * @return BinaryFileResponse
      */
-    public function exportPDF()
+    public function exportPDF(): BinaryFileResponse
     {
+        $orders = session()->get("orders");
+        $from = session()->get("from");
+        $to = session()->get("to");
         return Excel::download(
-            export: new ReportExport(),
+            export: new ReportExport($orders, $from, $to),
             fileName: date("Ymd_His", time()) . "_report.pdf"
         );
+    }
+
+    /**
+     * @param Collection $data
+     */
+    public function setData(Collection $data): void
+    {
+        $this->data = $data;
     }
 
 

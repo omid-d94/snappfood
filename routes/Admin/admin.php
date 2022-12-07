@@ -1,6 +1,8 @@
 <?php
 
 
+use App\Http\Controllers\admin\AdminFoodPartyController;
+use App\Http\Controllers\admin\BannerController;
 use App\Http\Controllers\admin\CommentController;
 use App\Http\Controllers\admin\DiscountController;
 use App\Http\Controllers\admin\FoodCategoryController;
@@ -18,5 +20,9 @@ Route::prefix("admin")->middleware(["admin"])->group(function () {
         ->name("admin.comments.index");
     Route::delete("/comments/{comment}", [CommentController::class, "deletingConfirm"])
         ->name("admin.comments.confirm.delete");
+    /* Banner routes */
+    Route::resource("banners", BannerController::class);
+    /* Food Party Management */
+    Route::resource("food-party-management", AdminFoodPartyController::class);
 });
 

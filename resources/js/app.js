@@ -1,4 +1,5 @@
 import './bootstrap';
+import './slideshow';
 
 import jQuery from 'jquery';
 

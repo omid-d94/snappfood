@@ -9,7 +9,8 @@ class WorkingTime extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['start', 'end', 'day','restaurant_id'];
+    protected $table = "working_times";
+    protected $fillable = ['start', 'end', 'day', 'restaurant_id'];
 
     public function restaurant()
     {

@@ -34,21 +34,58 @@
                     </li>
                 </ul>
             </div>
-            <div>
-                <form action="{{route("seller.reports.filter.between")}}" method="POST">
-                    @csrf
-                    <label class="font-bold text-lg" for="from">From: </label>
-                    <input type="date" name="from" id="from"
-                           min="{{now()->startOfYear()}}" value="{{old("from")}}"
-                           max="{{now()}}">
-                    @error("from")<span class="font-bold text-red-600">{{$message}}</span> @enderror
-                    <label class="font-bold text-lg" for="to">To: </label>
-                    <input type="date" name="to" id="to"
-                           min="{{now()->startOfYear()}}" max="{{now()}}"
-                           value="{{old("to")}}">
-                    @error("to")<span class="font-bold text-red-600">{{$message}}</span> @enderror
-                    <button class="bg-yellow-500 text-white font-bold py-3 px-3 " type="submit">Filter</button>
-                </form>
+            <div class="flex flex-col gap-3">
+                <div>
+                    <form action="{{route("seller.reports.filter.between")}}"
+                          method="POST" id="filter-between-dates">
+                        @csrf
+
+                        <label class="font-bold text-lg" for="from">From: </label>
+                        <input type="date" name="from" id="from" class="rounded-lg"
+                               min="{{now()->startOfYear()}}" value="{{old("from")}}"
+                               max="{{now()}}">
+                        <label class="font-bold text-lg" for="to">To: </label>
+                        <input type="date" name="to" id="to" class="rounded-lg"
+                               min="{{now()->startOfYear()}}" max="{{now()}}"
+                               value="{{old("to")}}">
+
+
+                        <button class="bg-yellow-500 text-white font-bold py-3 px-3 rounded-lg"
+                                type="submit"
+                                name="action"
+                                value="filter-between-dates">
+                            Filter
+                        </button>
+                        @error("from")<p class="font-bold text-red-600">{{$message}}</p> @enderror
+                        @error("to")<p class="font-bold text-red-600">{{$message}}</p> @enderror
+                    </form>
+                </div>
+                <div class="flex justify-around">
+                    <div>
+                        <form action="{{route("seller.reports.filter.week")}}"
+                              method="POST" id="filter-by-week">
+                            @csrf
+                            <button type="submit"
+                                    class="font-bold px-3 py-3 text-white bg-red-700 rounded-lg"
+                                    name="action"
+                                    value="filter-by-week">
+                                Filter By Last Week
+                            </button>
+                        </form>
+                    </div>
+                    <div>
+                        <form action="{{route("seller.reports.filter.month")}}"
+                              method="POST" id="filter-by-month">
+                            @csrf
+                            <button type="submit"
+                                    class="font-bold px-3 py-3 text-white bg-red-700 rounded-lg"
+                                    name="action"
+                                    value="filter-by-month">
+                                Filter By Last Month
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
             <div class="flex flex-col gap-3">
 
@@ -79,8 +116,9 @@
                 </div>
             </div>
         </div>
-        <div class="w-2/3 mx-auto">
+        <div class="w-2/3 mx-auto flex flex-col justify-center items-center gap-10">
             <canvas id="income_chart" class="bg-white"></canvas>
+            <canvas id="count_chart" class="bg-white"></canvas>
         </div>
     </div>
 
@@ -89,7 +127,9 @@
 
         var countLabel = {{ Js::from($countLabel) }};
         var countDate = {{ Js::from($countData) }};
-        const data = {
+        var incomeLabel = {{ Js::from($incomeLabel) }};
+        var incomeDate = {{ Js::from($incomeData) }};
+        const dataCount = {
             labels: countLabel,
             datasets: [{
                 label: 'Order Count',
@@ -98,16 +138,34 @@
                 data: countDate,
             }],
         };
+        const dataIncome = {
+            labels: incomeLabel,
+            datasets: [{
+                label: 'Order Income',
+                backgroundColor: 'rgb(22,247,53)',
+                borderColor: 'rgb(22,247,53)',
+                data: incomeDate,
+            }],
+        };
 
-        const config = {
+        const configCount = {
             type: 'line',
-            data: data,
+            data: dataCount,
+            options: {}
+        };
+        const configIncome = {
+            type: 'bar',
+            data: dataIncome,
             options: {}
         };
 
-        const myChart = new Chart(
+        const incomeChart = new Chart(
             document.getElementById('income_chart'),
-            config,
+            configIncome,
+        );
+        const countChart = new Chart(
+            document.getElementById('count_chart'),
+            configCount,
         );
 
     </script>

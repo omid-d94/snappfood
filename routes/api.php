@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\BannerController;
 use App\Http\Controllers\Seller\OrderController;
 use App\Http\Controllers\User\AddressController;
 use App\Http\Controllers\User\AuthenticationUserController;
@@ -29,11 +30,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post("/login", [AuthenticationUserController::class, "login"]);
 Route::post("/register", [AuthenticationUserController::class, "store"]);
 
-
 //private routes
 Route::middleware("auth:sanctum")->group(function () {
+
     /* CRUD User, Logout Routes */
     Route::post("/logout", [AuthenticationUserController::class, "logout"]);
+
     /* update user */
     Route::put("/update/user/{user}", [AuthenticationUserController::class, "update"])
         ->whereNumber("user")
@@ -49,43 +51,14 @@ Route::middleware("auth:sanctum")->group(function () {
         ->whereNumber("user")
         ->name("user.show");
 
-    /* Addresses Routes */
-    Route::resource("addresses", AddressController::class);
-    Route::post("/addresses/{address}", [AddressController::class, "setDefaultAddress"]);
-    Route::get("/addresses/get/default", [AddressController::class, "getDefaultAddress"])
-        ->name("user.addresses.get.default");
-    Route::put("/addresses/{address}", [AddressController::class, "update"]);
-    Route::delete("/addresses/{address}", [AddressController::class, "destroy"]);
+    require_once __DIR__ . "/User/addresses.php";
 
-    /* Restaurants Routes */
-    Route::get("/restaurants", [RestaurantController::class, "index"]);///{params?}
-    Route::get("/restaurants/{restaurant}", [RestaurantController::class, "show"]);
+    require_once __DIR__ . "/User/restaurants.php";
 
-    /* Foods of Restaurant Routes */
-    Route::get("/restaurants/{restaurant}/foods", [RestaurantController::class, "getFoods"]);
+    require_once __DIR__ . "/User/carts.php";
 
-    /* Find the nearest restaurant */
-    Route::get("/restaurants/nearest-within-radius/{radius}", [NearestRestaurantController::class, "findNearestRestaurants"])
-        ->whereNumber("radius")
-        ->name("user.restaurants.find.nearest");
+    require_once __DIR__ . "/User/comments.php";
 
-    /* Food Cart Routes */
-    Route::get("/carts", [CartController::class, "getCart"]);
-    Route::post("/carts/add", [CartController::class, "addToCart"]);
-    Route::post("/carts/{cart}/pay", [CartController::class, "payForCart"])
-        ->whereNumber("cart");
-    Route::get("/carts/{cart}", [CartController::class, "showCart"]);
-    Route::patch("/carts/add/{cart}", [CartController::class, "updateCart"])
-        ->whereNumber("cart");
-    Route::delete("/carts/delete/{cart}", [CartController::class, "deleteCart"])
-        ->whereNumber("cart");
-    Route::delete("/carts/{cart}/food/{food}", [CartController::class, "deleteFood"])
-        ->whereNumber(["cart", "food"]);
-    /* Order Tracking by user */
-    Route::get("/orders/{order}", [OrderController::class, "orderTracking"])
-        ->whereNumber("order");
-    /* make a comment on order by user */
-    Route::post("/comments", [CommentController::class, "makeComment"]);
-    /* Get comments group by restaurant or food */
-    Route::get("/comments", [CommentController::class, "getFoodComments"]);
+    require_once __DIR__ . "/User/banners.php";
+
 });

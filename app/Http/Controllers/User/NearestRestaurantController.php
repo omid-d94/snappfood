@@ -7,48 +7,56 @@ use App\Http\Resources\RestaurantCollection;
 use App\Http\Resources\RestaurantResource;
 use App\Models\Address;
 use App\Models\Restaurant;
-
-//use Illuminate\Http\Client\Response;
+use Exception;
+use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 
 class NearestRestaurantController extends Controller
 {
     /**
-     * Find the nearest restaurants
+     * Find the nearest restaurants that equal less than radius param
      *
-     * using eloquent approach, make sure to replace the "Restaurant" with your actual model name
-     * replace 6371000 with 6371 for kilometer and 3956 for miles
-     * @param $radius
+     * @param int $radius
      * @return Application|ResponseFactory|\Illuminate\Http\Response
+     * @throws Exception
      */
-    public function findNearestRestaurants($radius = 10000000)
+    public function findNearestRestaurants(int $radius = 10000)
     {
+        try {
+            $address = $this->getUserAddress();
 
-        $address = $this->getUserAddress();
-        $restaurants = Restaurant::select(["*"])->selectRaw("
-                           ( 6371000 * acos( cos( radians(?) ) *
-                           cos( radians( latitude ) )
-                           * cos( radians( longitude ) - radians(?)
-                           ) + sin( radians(?) ) *
-                           sin( radians( latitude ) ) )
-                         ) AS distance", [$address->latitude, $address->longitude, $address->latitude])
-            ->where('is_open', true)
-            ->where('status', true)
-            ->having("distance", "<", $radius)
-            ->orderBy("distance", 'asc')
-            ->offset(0)
-            ->limit(20)
-            ->get();
+            if ($address !== false) {
+                $restaurants = Restaurant::select(["*"])
+                    ->selectRaw("ST_Distance_Sphere(
+                    Point(latitude,longitude),
+                    Point($address->latitude,$address->longitude)
+                ) as distance")
+                    ->where('is_open', true)
+                    ->where('status', true)
+                    ->having("distance", "<=", $radius)
+                    ->orderBy("distance", 'asc')
+                    ->limit(20)
+                    ->get();
 
-        return (count($restaurants) < 1)
-            ? response(["message" => "NO RESTAURANT NEAR YOU WAS FOUND!"], Response::HTTP_NOT_FOUND)
-            : response(new RestaurantCollection($restaurants), Response::HTTP_OK);
-
+                return (count($restaurants) < 1)
+                    ? response(["message" => "NO RESTAURANT NEAR YOU WAS FOUND!"], Response::HTTP_NOT_FOUND)
+                    : response(
+                        [
+                            "message" => count($restaurants) . " has been founded!",
+                            "restaurants" => new RestaurantCollection($restaurants)
+                        ],
+                        Response::HTTP_OK);
+            }
+            return response(["message" => "You have no address for yourself. Please add an address"], Response::HTTP_BAD_REQUEST);
+        } catch (Throwable $e) {
+            throw new Exception(message: $e->getMessage(), code: $e->getCode());
+        }
     }
 
 
@@ -70,59 +78,40 @@ class NearestRestaurantController extends Controller
         return false;
     }
 
-
-
-    /*
-     selectRaw("ST_Distance_Sphere(
-                    Point($userAddress->latitude,$userAddress->longitude),
-                    Point(latitude,longitude)
-                ) / ? as distance", [1000])
+    /**
+     * Get response from Neshan api to calculate distance
+     *
+     * @param $restaurants
+     * @param $user
+     * @return PromiseInterface|\Illuminate\Http\Client\Response
      */
-
-
-    /*
-    public function getRestaurantsAddress()
+    public function checkTimeDistance($restaurants, $user)
     {
-        $restaurantAddresses = Restaurant::select("latitude", "longitude")
-            ->where("status", true)->where("is_open", true)->get();
-        if (count($restaurantAddresses) >= 1) {
-            return $restaurantAddresses;
-        }
-        return false;
-    }
-
-    public function checkDistance($restaurant, $user)
-    {
+        $destination = $this->prepareDestination($restaurants);
         return Http::withHeaders([
             "Api-key" => Address::API_KEY,
-        ])->get(
+        ])->acceptJson()->accept("*/*")->get(
             url: Address::DISTANCE_MATRIX_URL,
             query: [Address::TYPE => Address::VEHICLE_TYPE,
                 Address::ORIGINS => $user->latitude . "," . $user->longitude,
-                Address::DESTINATIONS => $restaurant->latitude . "," . $restaurant->longitude]
+                Address::DESTINATIONS => $destination]
         );
     }
 
-    public function findNearestRestaurant()
+    /**
+     * merge location of each restaurant in destinations
+     *
+     * @param $restaurants
+     * @return string
+     */
+    public function prepareDestination($restaurants)
     {
-        $userAddress = $this->getUserAddress();
-//        $restaurantsAddress = $this->getRestaurantsAddress();
-        if (!$userAddress)
-            return response(
-                content: ["message" => "NO ADDRESS FOUND"],
-                status: Response::HTTP_NOT_FOUND);
-
-        $restaurant = Restaurant::whereRaw("ST_Distance_Sphere(
-                    Point($userAddress->latitude,$userAddress->longitude),
-                    Point(latitude,longitude)
-                 ) > ? ", 10000)->first();
-        return $restaurant;
-        return response(
-            content: [
-                "message" => "The nearest restaurant was found",
-                "restaurant" => RestaurantResource::make($restaurant)
-            ], status: Response::HTTP_OK);
+        return implode(
+            separator: "|",
+            array: $restaurants->map(function ($restaurant) {
+                return $restaurant->latitude . "," . $restaurant->longitude;
+            })->toArray()
+        );
     }
 
-*/
 }

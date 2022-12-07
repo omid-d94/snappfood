@@ -7,6 +7,9 @@
             <span class="font-semibold text-xl text-gray-800 leading-tight hover:text-green-700">
             <a href="{{url("/seller/foods/create")}}">{{ __('Add-Food') }}</a>
         </span>
+            <span class="font-semibold text-xl text-gray-800 leading-tight hover:text-green-700">
+                <a href="{{url("/seller/food-party")}}">{{ __('Food-Party') }}</a>
+            </span>
         </div>
     </x-slot>
 
@@ -44,7 +47,8 @@
                             <td class="border-r-2 border-cyan-900 px-5 py-3 font-semibold">{{$food->raw_material}}</td>
                             <td class="border-r-2 border-cyan-900 px-5 py-3 font-semibold">{{$food->price}}</td>
                             <td class="border-r-2 border-cyan-900 px-5 py-3
-                            font-semibold">{{($food->discount->percent)??0}}%</td>
+                            font-semibold">{{($food->discount->percent)??0}}%
+                            </td>
                             <td class="border-r-2 border-cyan-900 px-5 py-3
                             font-semibold">{{($food->price)*(($food->discount->factor)??1)}}</td>
                             <td class="px-5 py-3 font-semibold bg-green-600 text-white
@@ -79,7 +83,7 @@
                     </tbody>
                 </table>
                 <div>
-{{$foods->links()}}
+                    {{$foods->links()}}
                 </div>
             </div>
         </div>

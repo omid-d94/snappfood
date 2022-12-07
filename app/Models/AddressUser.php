@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class AddressUser extends Model
 {
     use HasFactory;
+
+    protected $table = "address_user";
 }

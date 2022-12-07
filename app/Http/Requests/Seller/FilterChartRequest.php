@@ -26,8 +26,8 @@ class FilterChartRequest extends FormRequest
     public function rules()
     {
         return [
-            "from" => ["required", "date"],//, "before=" . Carbon::parse($this->input("to"))
-            "to" => ["required", "date"],//, "after=" . Carbon::parse($this->input("from"))
+            "from" => ["required", "date", "before:to"],
+            "to" => ["required", "date", "after:from"],
         ];
     }
 }

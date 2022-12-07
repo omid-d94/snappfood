@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class RestaurantCollection extends ResourceCollection
@@ -9,8 +11,8 @@ class RestaurantCollection extends ResourceCollection
     /**
      * Transform the resource collection into an array.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @param Request $request
+     * @return array|Arrayable|\JsonSerializable
      */
     public function toArray($request)
     {
@@ -26,8 +28,10 @@ class RestaurantCollection extends ResourceCollection
                 ],
                 "score" => $restaurant->score,
                 "is_open" => $restaurant->is_open,
-                "image" => $restaurant->logo
+                "image" => $restaurant->logo,
+                "distance" => number_format($restaurant->distance, 0, ",") . " meter",
             ];
         });
     }
 }
+

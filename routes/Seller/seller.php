@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\Seller\CommentController;
 use App\Http\Controllers\Seller\FoodController;
+use App\Http\Controllers\Seller\FoodPartyController;
 use App\Http\Controllers\Seller\OrderController;
 use App\Http\Controllers\Seller\ReportController;
 use App\Http\Controllers\Seller\RestaurantController;
@@ -16,6 +17,9 @@ Route::prefix("seller")->middleware(["seller"])->group(function () {
 
     Route::resource("foods", FoodController::class)
         ->name("index", "seller.foods.index");
+
+    /* Food Party */
+    Route::resource("food-party", FoodPartyController::class);
 
     Route::get("/restaurants/setting", [RestaurantController::class, "showSetting"])
         ->name("seller.restaurants.setting");
@@ -72,4 +76,12 @@ Route::prefix("seller")->middleware(["seller"])->group(function () {
     //filter between two dates
     Route::post("/reports/filter-by-date", [ReportController::class, "filterDates"])
         ->name("seller.reports.filter.between");
+
+    //filter by week
+    Route::post("/reports/filter-by-week", [ReportController::class, "filterWeek"])
+        ->name("seller.reports.filter.week");
+
+    //filter by month
+    Route::post("/reports/filter-by-month", [ReportController::class, "filterMonth"])
+        ->name("seller.reports.filter.month");
 });

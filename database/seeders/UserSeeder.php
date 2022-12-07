@@ -16,13 +16,6 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::create([
-            "name" => "Omid Daryaei",
-            "email" => "omid@gmail.com",
-            "role" => 2,
-            "password" => Hash::make(12345678),
-            "phone" => +989123456789,
-        ]);
-        User::factory(10)->create();
+        User::factory(20)->create();
     }
 }

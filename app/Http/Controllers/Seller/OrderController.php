@@ -26,7 +26,7 @@ class OrderController extends Controller
      *
      * @return Application|Factory|View
      */
-    public function getOrders()
+    public function getOrders(): Factory|View|Application
     {
         $restaurant = auth("seller")->user()->restaurants->first();
         $orders = Order::where("restaurant_id", $restaurant->id)
@@ -39,7 +39,7 @@ class OrderController extends Controller
      *
      * @return Application|Factory|View
      */
-    public function getArchivedOrders()
+    public function getArchivedOrders(): View|Factory|Application
     {
         $orders = $this->getDeliveredOrders()
             ->paginate($perPage = 10, $columns = ["*"], $pageName = "order-page");
@@ -100,7 +100,7 @@ class OrderController extends Controller
      * @param int $order_id
      * @return Application|Factory|View
      */
-    public function showOrder(int $order_id)
+    public function showOrder(int $order_id): View|Factory|Application
     {
         $order = Order::where("id", $order_id)->withTrashed()->first();
         return view("orders.show", compact("order"));
@@ -114,7 +114,7 @@ class OrderController extends Controller
      * @param Order $order
      * @return RedirectResponse
      */
-    public function updateStatus(Request $request, Order $order)
+    public function updateStatus(Request $request, Order $order): RedirectResponse
     {
         $result = $order->update([
             "status" => $request->input("status")
@@ -150,7 +150,7 @@ class OrderController extends Controller
      * @param int $order_id
      * @return Application|ResponseFactory|\Illuminate\Http\Response
      */
-    public function orderTracking(int $order_id)
+    public function orderTracking(int $order_id): \Illuminate\Http\Response|Application|ResponseFactory
     {
         $order = Order::where("id", $order_id)
             ->withTrashed()
