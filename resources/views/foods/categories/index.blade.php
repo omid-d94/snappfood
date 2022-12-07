@@ -15,17 +15,16 @@
                 </a>
             </div>
             <div class="px-5 py-24 mx-auto">
-                <div class="flex flex-wrap m-4  gap-3 ">
+                <div class="flex m-4 p-5 flex-wrap">
                     @forelse($foodCategories as $category)
-                        <div class=" lg:w-1/4 md:w-1/2  w-full">
-
+                        <div class="flex flex-col items-center p-5 lg:w-1/4 md:w-1/2  w-full">
                             <a href="{{url("/admin/food-categories/{$category->id}")}}">
-                                <img class="h-full w-full hover:border-green-500 border-2 rounded-full border-red-500
-                            rounded-full cursor-pointer"
+                                <img class="hover:border-green-500 border-2 rounded-full border-red-500
+                                            rounded-full cursor-pointer w-36 h-36"
                                      src="{{asset("storage/".$category->image_path)}}"
                                      alt="{{$category->title}}">
 
-                                <h3 class="h-full cursor-pointer hover:text-green-700 w-full text-xl text-red-700 font-bold
+                                <h3 class="cursor-pointer hover:text-green-700 text-xl text-red-700 font-bold
                             p-4">{{$category->title}}</h3>
                             </a>
 

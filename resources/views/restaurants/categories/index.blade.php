@@ -18,16 +18,16 @@
                 @endauth
             </div>
             <div class="px-5 py-24 mx-auto">
-                <div class="flex flex-wrap m-4 gap-3">
+                <div class="justify-center flex flex-wrap p-5 m-5 gap-3">
                     @forelse($categories as $category)
-                        <div class=" lg:w-1/4 md:w-1/2  w-full">
+                        <div class=" lg:w-1/4 md:w-1/2 flex flex-col items-center w-full">
                             <a href="{{url("/admin/restaurant-categories/{$category->id}")}}">
-                                <img class="h-full w-full hover:border-green-500 border-2 rounded-full border-red-500
-                            rounded-full cursor-pointer"
+                                <img class="hover:border-green-500 border-2 rounded-full border-red-500
+                            rounded-full cursor-pointer w-36 h-36"
                                      src="{{asset("storage/".$category->image_path)}}"
                                      alt="{{$category->name}}">
 
-                                <h3 class="h-full cursor-pointer hover:text-green-700 w-full text-xl text-red-700 font-bold
+                                <h3 class="cursor-pointer hover:text-green-700 text-xl text-red-700 font-bold
                             p-4">{{$category->name}}</h3>
                             </a>
                         </div>
