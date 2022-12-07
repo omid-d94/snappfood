@@ -48,6 +48,12 @@
                             {{ __('Banners') }}
                         </x-nav-link>
 
+                        <!-- Food Parties -->
+                        <x-nav-link :href="route('food-party-management.index')"
+                                    :active="request()->routeIs('food-party-management.index')">
+                            {{ __('Food-Parties') }}
+                        </x-nav-link>
+
                     @endauth
                 </div>
             </div>
@@ -112,11 +118,13 @@
                     {{ __('Admin Dashboard') }}
                 </x-responsive-nav-link>
                 <!-- Restaurant Category -->
-                <x-responsive-nav-link :href="route('restaurant-categories.index')" :active="request()->routeIs('restaurant-categories.index')">
+                <x-responsive-nav-link :href="route('restaurant-categories.index')"
+                                       :active="request()->routeIs('restaurant-categories.index')">
                     {{ __('Restaurant Categories') }}
                 </x-responsive-nav-link>
                 <!-- Food Category -->
-                <x-responsive-nav-link :href="route('food-categories.index')" :active="request()->routeIs('food-categories.index')">
+                <x-responsive-nav-link :href="route('food-categories.index')"
+                                       :active="request()->routeIs('food-categories.index')">
                     {{ __('Food Categories') }}
                 </x-responsive-nav-link>
                 <!-- Discounts -->
@@ -124,12 +132,19 @@
                     {{ __('Discounts') }}
                 </x-responsive-nav-link>
                 <!-- Comments -->
-                <x-responsive-nav-link :href="route('admin.comments.index')" :active="request()->routeIs('admin.comments.index')">
+                <x-responsive-nav-link :href="route('admin.comments.index')"
+                                       :active="request()->routeIs('admin.comments.index')">
                     {{ __('Comments') }}
                 </x-responsive-nav-link>
                 <!-- Banners -->
                 <x-responsive-nav-link :href="route('banners.index')" :active="request()->routeIs('banners.index')">
                     {{ __('Banners') }}
+                </x-responsive-nav-link>
+
+                <!-- Food Party -->
+                <x-responsive-nav-link :href="route('food-party-management.index')"
+                                       :active="request()->routeIs('food-party-management.index')">
+                    {{ __('Food-Parties') }}
                 </x-responsive-nav-link>
             @endauth
 
