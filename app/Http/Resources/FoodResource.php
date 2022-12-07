@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class FoodResource extends JsonResource
@@ -9,8 +11,8 @@ class FoodResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @param Request $request
+     * @return array|Arrayable|\JsonSerializable
      */
     public function toArray($request)
     {
@@ -18,6 +20,7 @@ class FoodResource extends JsonResource
             "id" => $this->id,
             "title" => $this->title,
             "price" => $this->price,
+            "off" => DiscountResource::make($this->resource->discount),
             "raw_material" => $this->raw_material,
             "image" => $this->image_path
         ];
