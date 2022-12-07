@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\admin\AdminFoodPartyController;
 use App\Http\Controllers\admin\BannerController;
 use App\Http\Controllers\admin\CommentController;
 use App\Http\Controllers\admin\DiscountController;
@@ -20,6 +21,8 @@ Route::prefix("admin")->middleware(["admin"])->group(function () {
     Route::delete("/comments/{comment}", [CommentController::class, "deletingConfirm"])
         ->name("admin.comments.confirm.delete");
     /* Banner routes */
-    Route::resource("banners",BannerController::class);
+    Route::resource("banners", BannerController::class);
+    /* Food Party Management */
+    Route::resource("food-party-management", AdminFoodPartyController::class);
 });
 
