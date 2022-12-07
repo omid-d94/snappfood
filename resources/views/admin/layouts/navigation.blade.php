@@ -41,6 +41,13 @@
                                     :active="request()->routeIs('admin.comments.index')">
                             {{ __('Comments') }}
                         </x-nav-link>
+
+                        <!-- Banners -->
+                        <x-nav-link :href="route('banners.index')"
+                                    :active="request()->routeIs('banners.index')">
+                            {{ __('Banners') }}
+                        </x-nav-link>
+
                     @endauth
                 </div>
             </div>
@@ -103,6 +110,26 @@
             @auth("admin")
                 <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                     {{ __('Admin Dashboard') }}
+                </x-responsive-nav-link>
+                <!-- Restaurant Category -->
+                <x-responsive-nav-link :href="route('restaurant-categories.index')" :active="request()->routeIs('restaurant-categories.index')">
+                    {{ __('Restaurant Categories') }}
+                </x-responsive-nav-link>
+                <!-- Food Category -->
+                <x-responsive-nav-link :href="route('food-categories.index')" :active="request()->routeIs('food-categories.index')">
+                    {{ __('Food Categories') }}
+                </x-responsive-nav-link>
+                <!-- Discounts -->
+                <x-responsive-nav-link :href="route('discounts.index')" :active="request()->routeIs('discounts.index')">
+                    {{ __('Discounts') }}
+                </x-responsive-nav-link>
+                <!-- Comments -->
+                <x-responsive-nav-link :href="route('admin.comments.index')" :active="request()->routeIs('admin.comments.index')">
+                    {{ __('Comments') }}
+                </x-responsive-nav-link>
+                <!-- Banners -->
+                <x-responsive-nav-link :href="route('banners.index')" :active="request()->routeIs('banners.index')">
+                    {{ __('Banners') }}
                 </x-responsive-nav-link>
             @endauth
 
