@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Food extends Model
 {
@@ -14,27 +16,27 @@ class Food extends Model
 
     /**
      * Relationship between restaurant and food is one to many
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function restaurant()
+    public function restaurant(): BelongsTo
     {
         return $this->belongsTo(Restaurant::class, "restaurant_id");
     }
 
     /**
      * Relationship between category and food is one to many
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function foodCategory()
+    public function foodCategory(): BelongsTo
     {
         return $this->belongsTo(FoodCategory::class, "food_category");
     }
 
     /**
      * Relationship between food and cart is many to many
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
-    public function carts()
+    public function carts(): BelongsToMany
     {
         return $this->belongsToMany(
             Cart::class,
@@ -46,9 +48,9 @@ class Food extends Model
 
     /**
      * Relationship between food and order is many to many
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
-    public function orders()
+    public function orders(): BelongsToMany
     {
         return $this->belongsToMany(
             Order::class,
@@ -60,10 +62,24 @@ class Food extends Model
 
     /**
      * Relationship between discount and food  is on to many
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function discount()
+    public function discount(): BelongsTo
     {
         return $this->belongsTo(Discount::class, "discount_id");
+    }
+
+    /**
+     * Relationship between food and food-party is many to many
+     * @return BelongsToMany
+     */
+    public function foodParties(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            related: FoodParty::class,
+            table: "food_food_party",
+            foreignPivotKey: "food_id",
+            relatedPivotKey: "food_party_id")
+            ->withPivot("count", "discount_id");
     }
 }
