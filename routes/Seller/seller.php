@@ -72,4 +72,12 @@ Route::prefix("seller")->middleware(["seller"])->group(function () {
     //filter between two dates
     Route::post("/reports/filter-by-date", [ReportController::class, "filterDates"])
         ->name("seller.reports.filter.between");
+
+    //filter by week
+    Route::post("/reports/filter-by-week", [ReportController::class, "filterWeek"])
+        ->name("seller.reports.filter.week");
+
+    //filter by month
+    Route::post("/reports/filter-by-month", [ReportController::class, "filterMonth"])
+        ->name("seller.reports.filter.month");
 });
