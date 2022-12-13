@@ -69,33 +69,17 @@ alt="SnappFood"></p>
 ## Screenshots
 - ### Foods: 
 
-<<<<<<< HEAD
 <img style="border:4px black solid; border-radius:10px;" src="screenshots/Foods.png" alt="Foods">
 
 - ### comments: 
 
 <img style="border:4px black solid; border-radius:10px;"  src="screenshots/Comments.png" alt="Comments">
-=======
-<img style="border:4px black solid; border-radius:10px; hover:border:4px green solid;" src="screenshots/foods.png">
-
-- ### comments: 
-
-<img style="border:4px black solid; border-radius:10px; hover:border:4px green solid;"  src="screenshots/comments.png">
->>>>>>> 3a68ac116585b26e3423d8c2f094f9f63e3e7550
 
 - ### reports: 
 
-<img style="border:4px black solid; border-radius:10px;" src="screenshots/Foods.png" alt="Foods">
-
-- ### comments:
-
-<img style="border:4px black solid; border-radius:10px;"  src="screenshots/Comments.png" alt="Comments">
-
-- ### reports:
-
 <img style="border:4px black solid; border-radius:10px;"  src="screenshots/Reports.png" alt="Reports">
 
-- ### editing restaurant info:
+- ### editing restaurant info: 
 
 <img style="border:4px black solid; border-radius:10px;"  src="screenshots/Restaurant.png" alt="Restaurant">
 
