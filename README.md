@@ -44,7 +44,7 @@ alt="SnappFood"></p>
 - Adding banner to display in customer side.
 - Adding discounts to use the seller in her/his foods.
 - Delete comments requested by the seller. 
-
+---
 ## Steps:
 
 <pre><code>git clone https://github.com/omid-d94/snappfood.git </code></pre>
@@ -65,23 +65,25 @@ alt="SnappFood"></p>
   - <p>email: <pre><code>admin@admin.com</code></pre></p>
   - <p>password: <pre><code>password</code></pre></p>
 
+---
 ## Screenshots
 - ### Foods: 
 
-<img style="border:4px black solid; border-radius:10px; hover:border:4px green solid;" src="screenshots/foods.png">
+<img style="border:4px black solid; border-radius:10px;" src="screenshots/Foods.png" alt="Foods">
 
 - ### comments: 
 
-<img style="border:4px black solid; border-radius:10px; hover:border:4px green solid;"  src="screenshots/comments.png">
+<img style="border:4px black solid; border-radius:10px;"  src="screenshots/Comments.png" alt="Comments">
 
-- ### reporsts: 
+- ### reports: 
 
-<img style="border:4px black solid; border-radius:10px; hover:border:4px green solid;"  src="screenshots/reports.png">
+<img style="border:4px black solid; border-radius:10px;"  src="screenshots/Reports.png" alt="Reports">
 
 - ### editing restaurant info: 
 
-<img style="border:4px black solid; border-radius:10px; hover:border:4px green solid;"  src="screenshots/restaurant.png">
+<img style="border:4px black solid; border-radius:10px;"  src="screenshots/Restaurant.png" alt="Restaurant">
 
 - ### order details
 
-<img style="border:4px black solid; border-radius:10px; hover:border:4px green solid;"  src="screenshots/orders.png">
+<img style="border:4px black solid; border-radius:10px;"  src="screenshots/Orders.png" alt="Orders">
+
