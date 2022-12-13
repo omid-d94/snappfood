@@ -17,8 +17,8 @@ class WorkingTimesCollection extends ResourceCollection
         return collect($this->collection)->map(function ($workingTime) {
             return [
                 $workingTime?->day => [
-                    "start" => $workingTime?->start,
-                    "end" => $workingTime?->end
+                    "start" => $workingTime?->start??"",
+                    "end" => $workingTime?->end??""
                 ]
             ];
         });

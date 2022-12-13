@@ -35,7 +35,7 @@ class ReportController extends Controller
         session()->put(
             [
                 "orders" => $orders,
-                "from" => $orders->first()->created_at,
+                "from" => $orders->first()?->created_at,
                 "to" => now()->format("Y-m-d")
             ]);
         $count = $orders->count();
