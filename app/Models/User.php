@@ -41,6 +41,21 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'is_admin' => 'boolean',
     ];
+
+    public function addresses()
+    {
+        return $this->belongsToMany(
+            related: Address::class,
+            table: "address_user",
+            foreignPivotKey: "user_id",
+            relatedPivotKey: "address_id"
+        );
+    }
+
+    /* Relationship between user and cart is one to many */
+    public function carts()
+    {
+        return $this->hasMany(Cart::class, "user_id");
+    }
 }
