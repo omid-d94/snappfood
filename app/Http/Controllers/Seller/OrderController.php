@@ -29,7 +29,7 @@ class OrderController extends Controller
     public function getOrders(): Factory|View|Application
     {
         $restaurant = auth("seller")->user()->restaurants->first();
-        $orders = Order::where("restaurant_id", $restaurant->id)
+        $orders = Order::where("restaurant_id", $restaurant?->id)
             ->paginate($perPage = 10, $columns = ["*"], $pageName = "order-page");
         return view("seller.dashboard", compact("orders"));
     }
@@ -49,7 +49,7 @@ class OrderController extends Controller
     public function getDeliveredOrders()
     {
         $restaurant = auth("seller")->user()->restaurants->first();
-        return Order::where("restaurant_id", $restaurant->id)
+        return Order::where("restaurant_id", $restaurant?->id)
             ->where("status", Order::DELIVERED)->withTrashed();
     }
 
@@ -158,7 +158,7 @@ class OrderController extends Controller
         if (!is_null($order)) {
             Gate::authorize("owner-order", $order);
             return response(
-                ["message" => "your order status => {$order->status}"],
+                ["message" => $order->status],
                 Response::HTTP_OK);
         }
         return response(["message" => "ORDER NOT FOUND!"], Response::HTTP_NOT_FOUND);
