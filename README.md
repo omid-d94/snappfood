@@ -68,20 +68,20 @@ alt="SnappFood"></p>
 ## Screenshots
 - ### Foods: 
 
-<img style="border:4px black solid; border-radius:10px; hover:border:4px green solid;" src="./screenshots/foods.png">
+<img style="border:4px black solid; border-radius:10px; hover:border:4px green solid;" src="screenshots/foods.png">
 
 - ### comments: 
 
-<img style="border:4px black solid; border-radius:10px; hover:border:4px green solid;"  src="./screenshots/comments.png">
+<img style="border:4px black solid; border-radius:10px; hover:border:4px green solid;"  src="screenshots/comments.png">
 
 - ### reporsts: 
 
-<img style="border:4px black solid; border-radius:10px; hover:border:4px green solid;"  src="./screenshots/reports.png">
+<img style="border:4px black solid; border-radius:10px; hover:border:4px green solid;"  src="screenshots/reports.png">
 
 - ### editing restaurant info: 
 
-<img style="border:4px black solid; border-radius:10px; hover:border:4px green solid;"  src="./screenshots/restaurant.png">
+<img style="border:4px black solid; border-radius:10px; hover:border:4px green solid;"  src="screenshots/restaurant.png">
 
 - ### order details
 
-<img style="border:4px black solid; border-radius:10px; hover:border:4px green solid;"  src="./screenshots/orders.png">
+<img style="border:4px black solid; border-radius:10px; hover:border:4px green solid;"  src="screenshots/orders.png">
