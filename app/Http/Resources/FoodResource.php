@@ -20,7 +20,7 @@ class FoodResource extends JsonResource
             "id" => $this->id,
             "title" => $this->title,
             "price" => $this->price,
-            "off" => DiscountResource::make($this->resource->discount),
+            "off" => DiscountResource::make($this->resource->discount)??"",
             "raw_material" => $this->raw_material,
             "image" => $this->image_path
         ];
