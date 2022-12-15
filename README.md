@@ -44,16 +44,18 @@ alt="SnappFood"></p>
 - Adding banner to display in customer side.
 - Adding discounts to use the seller in her/his foods.
 - Delete comments requested by the seller. 
-
+---
 ## Steps:
-
+- Receive project
 <pre><code>git clone https://github.com/omid-d94/snappfood.git </code></pre>
+- Change directory to project directory
 <pre><code>cd snappfood</code></pre>
 - completing variables in <b>.env</b> file
 <pre><code>cp .env.example .env</code></pre>
 - Installing dependencies that used in project.
-<pre><code>composer install </code></pre>
-<pre><code>composer update --with-all-dependencies </code></pre>
+<pre><code>composer install --ignore-platform-reqs </code></pre>
+- Updating packages if you want!
+<pre><code>composer update --ignore-platform-reqs </code></pre>
 - Installing packages like tailwindcss that used in project
 <pre><code>npm install & npm run build</code></pre>
 - For encrypting cookies
@@ -65,23 +67,41 @@ alt="SnappFood"></p>
   - <p>email: <pre><code>admin@admin.com</code></pre></p>
   - <p>password: <pre><code>password</code></pre></p>
 
+---
 ## Screenshots
 - ### Foods: 
 
-<img style="border:4px black solid; border-radius:10px; hover:border:4px green solid;" src="./screenshots/foods.png">
+<<<<<<< HEAD
+<img style="border:4px black solid; border-radius:10px;" src="screenshots/Foods.png" alt="Foods">
 
 - ### comments: 
 
-<img style="border:4px black solid; border-radius:10px; hover:border:4px green solid;"  src="./screenshots/comments.png">
+<img style="border:4px black solid; border-radius:10px;"  src="screenshots/Comments.png" alt="Comments">
+=======
+<img style="border:4px black solid; border-radius:10px; hover:border:4px green solid;" src="screenshots/foods.png">
 
-- ### reporsts: 
+- ### comments: 
 
-<img style="border:4px black solid; border-radius:10px; hover:border:4px green solid;"  src="./screenshots/reports.png">
+<img style="border:4px black solid; border-radius:10px; hover:border:4px green solid;"  src="screenshots/comments.png">
+>>>>>>> 3a68ac116585b26e3423d8c2f094f9f63e3e7550
 
-- ### editing restaurant info: 
+- ### reports: 
 
-<img style="border:4px black solid; border-radius:10px; hover:border:4px green solid;"  src="./screenshots/restaurant.png">
+<img style="border:4px black solid; border-radius:10px;" src="screenshots/Foods.png" alt="Foods">
+
+- ### comments:
+
+<img style="border:4px black solid; border-radius:10px;"  src="screenshots/Comments.png" alt="Comments">
+
+- ### reports:
+
+<img style="border:4px black solid; border-radius:10px;"  src="screenshots/Reports.png" alt="Reports">
+
+- ### editing restaurant info:
+
+<img style="border:4px black solid; border-radius:10px;"  src="screenshots/Restaurant.png" alt="Restaurant">
 
 - ### order details
 
-<img style="border:4px black solid; border-radius:10px; hover:border:4px green solid;"  src="./screenshots/orders.png">
+<img style="border:4px black solid; border-radius:10px;"  src="screenshots/Orders.png" alt="Orders">
+
