@@ -3,9 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\Admin;
-use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\Seller;
-use App\Http\Middleware\UserAccess;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
