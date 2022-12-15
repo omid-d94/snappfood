@@ -46,14 +46,16 @@ alt="SnappFood"></p>
 - Delete comments requested by the seller. 
 ---
 ## Steps:
-
+- Receive project
 <pre><code>git clone https://github.com/omid-d94/snappfood.git </code></pre>
+- Change directory to project directory
 <pre><code>cd snappfood</code></pre>
 - completing variables in <b>.env</b> file
 <pre><code>cp .env.example .env</code></pre>
 - Installing dependencies that used in project.
-<pre><code>composer install </code></pre>
-<pre><code>composer update --with-all-dependencies </code></pre>
+<pre><code>composer install --ignore-platform-reqs </code></pre>
+- Updating packages if you want!
+<pre><code>composer update --ignore-platform-reqs </code></pre>
 - Installing packages like tailwindcss that used in project
 <pre><code>npm install & npm run build</code></pre>
 - For encrypting cookies
