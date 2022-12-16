@@ -1,12 +1,17 @@
-<p align="center"><img style="border-radius: 50%;" width="125px" height="125px" src="public/img/logo-400x400.png" 
-alt="SnappFood"></p>
-
 <p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png" width="24px" height="24px" alt="star">
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+    <img style="border-radius: 50%;" width="125px" height="125px" src="public/img/logo-400x400.png" alt="SnappFood">
 </p>
+
+---
+<p>
+    <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" 
+         height="50px" alt="Laravel Logo" style="margin-right: 10px;"> 
+    <img src="public/img/tailwindcss.jpg" alt="tailwindcss" height="50px" style="margin-right: 10px;">
+    <img src="public/img/laravel%20excel.png" alt="laravel-excel" height="50px" style="margin-right: 10px;">
+    <img src="public/img/neshan.png" alt="neshan map" height="50px" width="50px">
+</p>
+
+---
 
 ## Features
 
