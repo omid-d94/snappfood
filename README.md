@@ -7,7 +7,7 @@
     <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" 
          height="50px" alt="Laravel Logo" style="margin-right: 10px;"> 
     <img src="public/img/tailwindcss.jpg" alt="tailwindcss" height="50px" style="margin-right: 10px;">
-    <img src="public/img/laravel%20excel.png" alt="laravel-excel" height="50px" style="margin-right: 10px;">
+    <img src="public/img/laravel_excel.png" alt="laravel-excel" height="50px" style="margin-right: 10px;">
     <img src="public/img/neshan.png" alt="neshan map" height="50px" width="50px">
 </p>
 
