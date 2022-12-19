@@ -15,14 +15,15 @@
 
 ## Features
 
-- Authentication system by laravel [breeze](https://laravel.com/docs/9.x/starter-kits#laravel-breeze).
+- Authentication system by laravel [breeze](https://laravel.com/docs/9.x/starter-kits#laravel-breeze) & custom guard.
 - Make separate panel for the admin and seller.
-- Authorizing
-    - Use guard to authorizing the seller and admin.
-    - Use laravel sanctum to authorizing user as a customer.
+- Guards
+    - Use seller guard to authenticating the seller.
+    - Use admin guard to authenticating the admin.
+    - Use laravel sanctum to authenticating the user as a customer.
 - Send email to the customer at any stage of the order status with job and [queue](https://laravel.com/docs/9.x/queues).
 
-## Seller's Panel:
+## Seller Panel:
 
 - Profile
     - First, seller should be filled restaurant profile
@@ -38,12 +39,12 @@
     - confirm them to show the other customers,
     - make delete request and send to the admin for deleting specific comment.
     - Reply to comment message by the seller.
-- [Reports](#reporsts)
+- [Reports](#reports)
     - Ability to report income and number of orders <br>
     - filter them between two dates, last week or last month.<br>
     - export the report to [excel](https://packagist.org/packages/maatwebsite/excel). <br>
 
-## Admin's Panel:
+## Admin Panel:
 
 - Making Categories for restaurants and foods.
 - Adding banner to display in customer side.
