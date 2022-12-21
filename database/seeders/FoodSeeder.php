@@ -158,10 +158,10 @@ class FoodSeeder extends Seeder
             "discount_id" => null
         ]);
         foreach ($foods as $food) {
-            FoodCategoryRestaurant::create([
+            FoodCategoryRestaurant::updateOrCreate([
                 "food_category_id" => $food->food_category,
                 "restaurant_id" => $food->restaurant_id,
-            ]);
+            ],[]);
         }
     }
 }
