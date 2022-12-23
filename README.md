@@ -77,7 +77,7 @@
 
 - Installing packages like tailwindcss that used in project
 
-<pre><code>npm install & npm run build</code></pre>
+<pre><code>npm install && npm run build</code></pre>
 
 - For encrypting cookies
 
